@@ -5,9 +5,12 @@ from django.views.generic.base import RedirectView
 import linkShortener.serializers as serializers
 import linkShortener.services as services
 
+from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+import validators
 
 
 class CreateSocketView(CreateAPIView):
@@ -17,19 +20,30 @@ class CreateSocketView(CreateAPIView):
     serializer_class = serializers.CreateSocketSerializer
 
     def create(self, request, *args, **kwargs) -> Response:
+        serializer = self.serializer_class(request.data)
         user = request.user if request.user.is_authenticated else None
-        serializer = self.serializer_class(request.data).data
-        full_url = serializer['full_url']
-        socket = services.get_socket(full_url=full_url)
+        full_url = serializer.data['full_url']
 
-        if socket is not None:
-            return Response({'status': 'already exists'})
+        if not bool(validators.url(full_url)):
+            return Response(
+                {'status': 'url isnt correct'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if services.get_socket(full_url=full_url):
+            return Response(
+                {'status': 'already exists'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         services.create_socket(
-                user=user,
-                full_url=full_url,
-            )
-        return Response({'status': 'success'})
+            user=user,
+            full_url=full_url,
+        )
+        return Response(
+            {'status': 'success'},
+            status=status.HTTP_201_CREATED,
+        )
 
 
 class RedirectionView(RedirectView):
