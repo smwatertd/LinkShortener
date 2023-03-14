@@ -2,7 +2,7 @@ from typing import Optional
 
 from django.views.generic.base import RedirectView
 
-import linkShortener.api.serializers as serializers
+import linkShortener.serializers as serializers
 import linkShortener.services as services
 
 from rest_framework.generics import CreateAPIView, ListAPIView
@@ -11,6 +11,9 @@ from rest_framework.response import Response
 
 
 class CreateSocketView(CreateAPIView):
+    """
+    Представление создания сокета
+    """
     serializer_class = serializers.CreateSocketSerializer
 
     def create(self, request, *args, **kwargs) -> Response:
@@ -30,6 +33,9 @@ class CreateSocketView(CreateAPIView):
 
 
 class RedirectionView(RedirectView):
+    """
+    Представление перенаправления по короткому url
+    """
     def get_redirect_url(self, *args, **kwargs) -> Optional[str]:
         socket = services.get_socket(short_url=kwargs['short_url'])
 
@@ -37,17 +43,20 @@ class RedirectionView(RedirectView):
             return None
 
         ip = services.get_or_create_ip(self.request)
-        services.update_socket(socket, ip)
+        services.add_ip_to_socket_views(socket, ip)
         return socket.full_url
 
 
 class UserSocketsView(ListAPIView):
+    """
+    Представление списка сокетов пользователя
+    """
     permission_classes = (
         IsAuthenticated,
     )
 
     def get(self, request, *args, **kwargs) -> Response:
-        user_urls = services.get_user_urls(request.user.id)
+        user_urls = services.get_user_sockets(request.user.id)
         serializer = serializers.ListSocketSerializer(
             user_urls,
             many=True,

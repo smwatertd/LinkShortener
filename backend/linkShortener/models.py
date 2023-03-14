@@ -4,6 +4,9 @@ from djongo import models
 
 
 class Ip(models.Model):
+    """
+    Ip пользователя
+    """
     address = models.CharField(
         primary_key=True,
         max_length=40,
@@ -11,6 +14,9 @@ class Ip(models.Model):
 
 
 class Socket(models.Model):
+    """
+    Комбинация полного и короткого url
+    """
     author = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
