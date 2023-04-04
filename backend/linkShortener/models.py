@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
-
-from djongo import models
+from django.db import models
 
 
 class Ip(models.Model):
@@ -24,13 +23,12 @@ class Socket(models.Model):
         default=None,
     )
 
-    full_url = models.URLField(
+    short_url = models.URLField(
         primary_key=True,
         db_index=True,
     )
 
-    short_url = models.URLField(
-        unique=True,
+    full_url = models.URLField(
     )
 
     created_at = models.DateTimeField(

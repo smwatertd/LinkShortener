@@ -26,9 +26,16 @@ class ListSocketSerializer(serializers.ModelSerializer):
             'full_url',
             'short_url',
             'created_at',
-            'last_visited_at',
             'views',
         )
 
     def get_views(self, obj: Socket) -> int:
         return obj.views.count()
+
+
+class RedirectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Socket
+        fields = (
+            'full_url',
+        )

@@ -1,9 +1,8 @@
-from typing import Optional
-
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
 
 from linkShortener import utils
+from linkShortener.exceptions import ShortUrlNotFound
 from linkShortener.models import Ip, Socket
 
 
@@ -12,27 +11,36 @@ def generate_short_url() -> str:
     Генератор уникального короткого url
     """
     short_url = utils.generate_short_url()
-    while get_socket(short_url=short_url):
+    while is_socket_exists(short_url=short_url):
         short_url = utils.generate_short_url()
     return short_url
 
 
-def create_socket(*args, **kwargs) -> Socket:
+def create_socket(user, full_url: str) -> Socket:
     """
     Создание сокета
     """
+    user = user if user.is_authenticated else None
     return Socket.objects.create(
-        author=kwargs['user'],
-        full_url=kwargs['full_url'],
+        author=user,
+        full_url=full_url,
         short_url=generate_short_url(),
     )
 
 
-def get_socket(*args, **kwargs) -> Optional[Socket]:
+def is_socket_exists(**kwargs) -> bool:
+    return bool(Socket.objects.filter(**kwargs))
+
+
+def get_socket(short_url: str) -> Socket:
     """
     Получение сокета
     """
-    return Socket.objects.filter(**kwargs).first()
+    try:
+        socket = Socket.objects.get(short_url=short_url)
+    except Socket.DoesNotExist:
+        raise ShortUrlNotFound
+    return socket
 
 
 def get_user_sockets(user_id: int) -> QuerySet[Socket]:
@@ -57,7 +65,6 @@ def add_ip_to_socket_views(socket: Socket, ip: Ip) -> None:
         return
     socket.views.add(ip)
     socket.save()
-    pass
 
 
 def get_or_create_ip(request: HttpRequest) -> Ip:
