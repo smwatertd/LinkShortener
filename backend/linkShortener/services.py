@@ -1,4 +1,3 @@
-from django.db.models.query import QuerySet
 from django.http import HttpRequest
 
 from linkShortener import utils
@@ -41,13 +40,6 @@ def get_socket(short_url: str) -> Socket:
     except Socket.DoesNotExist:
         raise ShortUrlNotFound
     return socket
-
-
-def get_user_sockets(user_id: int) -> QuerySet[Socket]:
-    """
-    Получение сокетов пользователя
-    """
-    return Socket.objects.filter(author_id=user_id)
 
 
 def is_socket_contains_ip(socket: Socket, ip: Ip) -> bool:

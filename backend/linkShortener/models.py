@@ -1,4 +1,5 @@
-from django.contrib.auth import get_user_model
+from app.settings import AUTH_USER_MODEL as User
+
 from django.db import models
 
 
@@ -17,7 +18,7 @@ class Socket(models.Model):
     Комбинация полного и короткого url
     """
     author = models.ForeignKey(
-        get_user_model(),
+        User,
         on_delete=models.CASCADE,
         null=True,
         default=None,

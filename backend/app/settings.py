@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'linkShortener',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,5 @@ CORS_ALLOWED_ORIGINS = [
 
 MAX_LENGTH = env.int('MAX_LENGTH')
 CHARACTERS = env.str('CHARACTERS')
+
+AUTH_USER_MODEL = 'users.User'
