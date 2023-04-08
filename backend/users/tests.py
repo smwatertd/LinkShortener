@@ -13,7 +13,7 @@ class TestSockets(APITestCase):
         self.short_url = 'abcdef'
 
         self.create_socket_url = reverse('create_sockets')
-        self.user_sockets_url = reverse('get_user_sockets')
+        self.user_sockets_url = reverse('user_view')
 
         self.success_request_data = {
             'full_url': 'https://www.youtube.com/',

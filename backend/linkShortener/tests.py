@@ -10,7 +10,7 @@ class TestSockets(APITestCase):
         self.short_url = 'abcdef'
 
         self.create_socket_url = reverse('create_sockets')
-        self.user_sockets_url = reverse('get_user_sockets')
+        self.user_sockets_url = reverse('user_view')
         self.redirect_url = reverse(
             'redirect',
             kwargs={'short_url': self.short_url},
@@ -50,7 +50,7 @@ class TestSockets(APITestCase):
             Socket.objects.get(full_url=self.failure_request_data['full_url'])
 
     def test_success_redirection(self):
-        Socket.objects.create(
+        socket = Socket.objects.create(
             author=None,
             full_url=self.success_request_data['full_url'],
             short_url=self.short_url,
@@ -60,6 +60,7 @@ class TestSockets(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['full_url'], self.success_request_data['full_url'])
+        self.assertEqual(socket.views.count(), 1)
 
     def test_failure_redirection(self):
         response = self.client.get(self.redirect_url)

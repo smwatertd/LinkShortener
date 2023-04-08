@@ -36,5 +36,9 @@ class RedirectView(RetrieveAPIView):
 
     def get(self, request, short_url: str, *args, **kwargs):
         socket = services.get_socket(short_url=short_url)
+        services.add_ip_to_socket_views(
+            socket,
+            services.get_or_create_ip(request),
+        )
         serializer = self.serializer_class(socket)
         return Response(serializer.data)
