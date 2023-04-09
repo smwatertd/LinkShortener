@@ -1,7 +1,9 @@
 import { useContext } from "react";
-import { Context } from "../index";
-import { Socket } from "./Socket";
 import { observer } from "mobx-react-lite";
+
+import { Context } from "../index";
+
+import { Socket } from "./Socket";
 
 const SocketList = observer(() => {
     const { socketList } = useContext(Context);

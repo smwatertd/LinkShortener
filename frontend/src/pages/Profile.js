@@ -1,7 +1,9 @@
 import { useContext, useEffect } from "react";
+
 import { fetchUserSockets } from "../http/UserApi";
 import { Context } from "../index";
 import { SocketList } from "../components/SocketList";
+
 const Profile = () => {
     const { socketList } = useContext(Context);
 
@@ -9,8 +11,8 @@ const Profile = () => {
         fetchUserSockets()
             .then(response => {
                 socketList.setSockets(response.data);
-            })
-    }, []);
+            });
+    }, );
 
     return (
         <div>

@@ -1,6 +1,8 @@
 import { useContext } from "react";
-import { Context } from "../index";
+
 import { observer } from "mobx-react-lite";
+
+import { Context } from "../index";
 
 const Footer = observer(() => {
     const { redirect } = useContext(Context);

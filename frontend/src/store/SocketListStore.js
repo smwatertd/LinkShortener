@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 
 class SocketListStore {
     constructor() {
-        this._sockets = []
+        this._sockets = [];
         makeAutoObservable(this);
     }
 
@@ -12,7 +12,7 @@ class SocketListStore {
                 fullUrl: socket.full_url,
                 shortUrl: socket.short_url,
                 createdAt: socket.created_at,
-                views: socket.views
+                views: socket.views,
             };
         });
     }
