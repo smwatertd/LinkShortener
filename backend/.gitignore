@@ -4,3 +4,5 @@ venv
 **/migrations/*
 !__init__.py
 .env
+brif.txt
+db.sqlite3
