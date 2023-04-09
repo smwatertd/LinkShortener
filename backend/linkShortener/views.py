@@ -18,12 +18,12 @@ class CreateSocketView(CreateAPIView):
         if not serializer.is_valid():
             raise exceptions.FullUrlIncorrect
 
-        services.create_socket(
+        socket = services.create_socket(
             request.user,
             serializer.data['full_url'],
         )
         return Response(
-            {'status': 'success'},
+            serializers.SocketSerializer(socket).data,
             status=status.HTTP_201_CREATED,
         )
 
