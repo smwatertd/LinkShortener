@@ -41,4 +41,7 @@ class RedirectView(RetrieveAPIView):
             services.get_or_create_ip(request),
         )
         serializer = self.serializer_class(socket)
-        return Response(serializer.data)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
