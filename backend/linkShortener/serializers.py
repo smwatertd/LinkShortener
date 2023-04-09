@@ -20,3 +20,15 @@ class RedirectSerializer(serializers.ModelSerializer):
         fields = (
             'full_url',
         )
+
+
+class SocketSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор сокета
+    """
+    class Meta:
+        model = Socket
+        fields = (
+            'full_url',
+            'short_url',
+        )
