@@ -1,21 +1,22 @@
 import { useContext } from "react";
-
 import { observer } from "mobx-react-lite";
 
 import { Context } from "../index";
 
 const Footer = observer(() => {
-    const { redirect } = useContext(Context);
+  const { redirect } = useContext(Context);
 
-    if (redirect.isRedirect) {
-        return;
-    }
-
+  if (redirect.isRedirect === true) {
     return (
-        <div>
-            Footer
-        </div>
+      <></>
     );
+  }
+
+  return (
+    <div>
+      Footer
+    </div>
+  );
 });
 
 export { Footer };

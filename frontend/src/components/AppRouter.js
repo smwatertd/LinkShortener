@@ -1,23 +1,23 @@
 import React from "react";
 import { Routes, Route }from "react-router-dom";
 
-import { publicRoutes, authRoutes } from "../utils/Routes";
+import { publicRoutes, privateRoutes } from "../utils/Routes";
 
 const AppRouter = () => {
-    return (
-        <Routes>
-            {
-                publicRoutes.map(
-                    ({path, component}) => <Route key={path} path={path} element={component} exact/>
-                )
-            }
-            {
-                authRoutes.map(
-                    ({path, component}) => <Route key={path} path={path} element={component} exact/>
-                )
-            }
-        </Routes>
-    );
+  return (
+    <Routes>
+      {
+        publicRoutes.map(
+          ({path, element}) => <Route key={path} path={path} element={element} exact/>
+        )
+      }
+      {
+        privateRoutes.map(
+          ({path, element}) => <Route key={path} path={path} element={element} exact/>
+        )
+      }
+    </Routes>
+  );
 };
 
 export default AppRouter;

@@ -1,17 +1,38 @@
-import { useContext } from "react";
+import { observer } from "mobx-react-lite";
 
-import { Context } from "../index";
+const Result = observer(() => {
+  const fullUrl = localStorage.getItem("fullUrl");
+  const shortUrl = localStorage.getItem("shortUrl");
 
-const Result = () => {
-    const { socket } = useContext(Context);
-
-    return (
-        <div>
-            Result
-            {socket.fullUrl}<br />
-            {socket.shortUrl}<br />
-        </div>
-    );
-};
+  return (
+    <div>
+      Full Url:
+      {
+        fullUrl === null
+          ?
+          <div>
+            Отсутствует
+          </div>
+          :
+          <div>
+            {fullUrl}
+          </div>
+      }
+      <br/>
+      Short Url
+      {
+        shortUrl === null
+          ?
+          <div>
+            Отсутствует
+          </div>
+          :
+          <div>
+            {shortUrl}
+          </div>
+      }
+    </div>
+  );
+});
 
 export { Result };

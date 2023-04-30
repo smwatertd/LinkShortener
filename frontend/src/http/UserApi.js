@@ -1,26 +1,26 @@
-import { $authHost, $host } from "./index";
+import { $host } from "./index";
 
-export const registration = async (username, email, password) => {
-    const promise = await $host.post("auth/users/", {username, email, password});
-    return promise;
+export const check = async () => {
+  const refresh = localStorage.getItem("refresh");
+  const response = $host.post("api/token/verify/", {
+    token: refresh === null ? 0 : refresh,
+  });
+  return response;
 };
 
-export const login = async (username, password) => {
-    const response = await $host.post("api/token/", {username, password});
-    localStorage.setItem("access", response.data.access);
-    localStorage.setItem("refresh", response.data.refresh);
+export const login = async (props) => {
+  const response = await $host.post("api/token/", props);
+  localStorage.setItem("access", response.data.access);
+  localStorage.setItem("refresh", response.data.refresh);
+  return response;
 };
 
-export const logOut = async () => {
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
+export const logout = () => {
+  localStorage.removeItem("access");
+  localStorage.removeItem("refresh");
 };
 
-export const fetchUserSockets = async () => {
-    const response = await $authHost.get("api/v1/users/");
-    return response;
-};
-
-export const refresh = async () => {
-
+export const registration = async (props) => {
+  const response = await $host.post("api/v1/users/", props);
+  return response;
 };

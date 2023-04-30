@@ -1,16 +1,21 @@
 import { $host, $authHost } from "./index";
 
-export const createSocket = async (full_url) => {
-    const response = await $host.post("api/v1/sockets/", {full_url});
-    return response;
+export const fetchFullUrl = async (props) => {
+  const response = $host.get("api/" + props.shortUrl);
+  return response;
 };
 
-export const createAuthSocket = async (full_url) => {
-    const response = await $authHost.post("api/v1/sockets/", {full_url});
-    return response;
+export const fetchSockets = async () => {
+  const response = await $authHost.get("api/v1/users/");
+  return response;
 };
 
-export const fetchFullUrl = async (shortUrl) => {
-    const response = await $host.get("api/" + shortUrl);
-    return response;
+export const createSocket = async (props) => {
+  const response = await $host.post("api/v1/sockets/", props);
+  return response;
+};
+
+export const createUserSocket = async (props) => {
+  const response = await $authHost.post("api/v1/sockets/", props);
+  return response;
 };

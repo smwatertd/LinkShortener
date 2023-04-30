@@ -1,25 +1,47 @@
 import { useContext, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 
-import { fetchUserSockets } from "../http/UserApi";
+import { fetchSockets } from "../http/SocketApi";
 import { Context } from "../index";
 import { SocketList } from "../components/SocketList";
 
-const Profile = () => {
-    const { socketList } = useContext(Context);
+const Profile = observer(() => {
+  const { user } = useContext(Context);
+  const { socketList } = useContext(Context);
 
-    useEffect(() => {
-        fetchUserSockets()
-            .then(response => {
-                socketList.setSockets(response.data);
-            });
-    }, );
+  useEffect(() => {
+    if (user.isAuth === false) {
+      return;
+    }
 
-    return (
-        <div>
-            Profile<br/>
-            <SocketList />
-        </div>
-    );
-};
+    fetchSockets()
+      .then(response => {
+        socketList.setSocketList(response.data);
+      });
+  }, [user.isAuth]);
+
+  return (
+    <div>
+      {
+        user.isAuth
+          ?
+          <div>
+            Profile
+            {
+              socketList.socketList.length === 0
+                ?
+                <div>У вас нет записей</div>
+                :
+                <SocketList />
+            }
+          </div>
+          :
+          <div>
+            Вы не авторизованы
+          </div>
+      }
+    </div>
+  );
+});
 
 export { Profile };

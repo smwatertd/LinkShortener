@@ -1,32 +1,39 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useContext } from "react";
 
-import { createSocket } from "../http/SocketApi";
+import { observer } from "mobx-react-lite";
+
 import { Context } from "../index";
+import { LogOut } from "../components/LogOut";
+import { Form } from "../components/Form";
+import {
+  LOGIN_ROUTE,
+  PROFILE_ROUTE,
+  REGISTRATION_ROUTE,
+} from "../utils/Consts";
 
-const Main = () => {
-    const navigate = useNavigate();
-    const { socket } = useContext(Context);
+const Main = observer(() => {
+  const { user } = useContext(Context);
 
-    const buttonClick = () => {
-        createSocket(url)
-            .then(response => {
-                socket.setFullUrl(response.data.full_url);
-                socket.setShortUrl(window.location.href + response.data.short_url);
-                navigate("/result");
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    };
+  return (
+    <div>
+      {
+        user.isAuth
+          ?
+          <div>
+            <NavLink to={PROFILE_ROUTE}>Profile</NavLink>
+            <LogOut />
+          </div>
+          :
+          <div>
+            <NavLink to={LOGIN_ROUTE}>Login</NavLink><br/>
+            <NavLink to={REGISTRATION_ROUTE}>Register</NavLink>
+          </div>
+      }
+      <Form />
+      <br/>
+    </div>
+  );
+});
 
-    const [url, setUrl] = useState("https://www.youtube.com/");
-    return (
-        <div>
-            <button onClick={buttonClick}>Generate new url</button>
-            <input type="text" onChange={e => setUrl(e.target.value)}/>
-        </div>
-    );
-};
-
-export { Main };
+export {Main};
