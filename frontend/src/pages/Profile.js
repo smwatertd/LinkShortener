@@ -17,6 +17,9 @@ const Profile = observer(() => {
     fetchSockets()
       .then(response => {
         socketList.setSocketList(response.data);
+      })
+      .catch(error => {
+        window.location.reload();
       });
   }, [user.isAuth]);
 
