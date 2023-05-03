@@ -1,11 +1,22 @@
+import { Typography } from "@mui/material";
+
 const Socket = ({socket}) => {
+  const { fullUrl, shortUrl, createdAt, views } = socket;
+
   return (
     <div>
+      <Typography
+        sx={{
+          paddingLeft: 2,
+          paddingTop: 2,
+        }}
+      >
+        Full Url: {fullUrl}<br/>
+        Short Url: {shortUrl}<br/>
+        Created At: {createdAt}<br/>
+        Views: {views}
+      </Typography>
       <hr/>
-      <div>full url: {socket.fullUrl}</div><br/>
-      <div>short url: {socket.shortUrl}</div><br/>
-      <div>created at: {socket.createdAt}</div><br/>
-      <div>views: {socket.views}</div><br/>
     </div>
   );
 };

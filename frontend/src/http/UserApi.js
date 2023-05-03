@@ -8,14 +8,14 @@ export const check = async () => {
   return response;
 };
 
-export const login = async (props) => {
+export const logIn = async (props) => {
   const response = await $host.post("api/token/", props);
   localStorage.setItem("access", response.data.access);
   localStorage.setItem("refresh", response.data.refresh);
   return response;
 };
 
-export const logout = () => {
+export const logOut = () => {
   localStorage.removeItem("access");
   localStorage.removeItem("refresh");
 };

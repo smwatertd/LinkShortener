@@ -12,7 +12,7 @@ const Redirect = () => {
 
   redirect.setIsRedirect(true);
 
-  useEffect(() => {
+  const handleShortUrlRedirect = () => {
     fetchFullUrl(shortUrl)
       .then(response => {
         window.location = response.data.full_url;
@@ -21,6 +21,10 @@ const Redirect = () => {
         redirect.setIsRedirect(false);
         navigate(ERROR_ROUTE);
       });
+  };
+
+  useEffect(() => {
+    handleShortUrlRedirect();
   }, []);
 
 

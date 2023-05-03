@@ -10,7 +10,9 @@ const SocketList = () => {
   return (
     <div>
       {
-        socketList.socketList.map(socket => <Socket key={socket.shortUrl} socket={socket}/>)
+        socketList.socketList.map(socket =>
+          <Socket key={socket.shortUrl} socket={socket}/>
+        )
       }
     </div>
   );

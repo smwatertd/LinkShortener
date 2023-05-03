@@ -1,43 +1,28 @@
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { Box } from "@mui/material";
 
 import { LOGIN_ROUTE } from "../utils/Consts";
-import { Login } from "../components/Login";
-import { Registration } from "../components/Registration";
+import { LogInForm } from "../components/forms/LoginForm";
+import { RegistrationForm } from "../components/forms/RegistrationForm";
 
 const Auth = () => {
   const location = useLocation();
   const isLogin = location.pathname === LOGIN_ROUTE;
-  const [ username, setUsername ] = useState("admin");
-  const [ email, setEmail ] = useState("admin@gmail.com");
-  const [ password, setPassword ] = useState("599523956qQ");
 
   return (
-    <div>
+    <Box
+      sx={{
+        padding: 2,
+      }}
+    >
       {
         isLogin
           ?
-          <div>
-            <div>Войти в систему</div>
-            <input type="text" placeholder="Username" onChange={
-              e => setUsername(e.target.value)}></input><br/>
-            <input type="password" placeholder="Password" onChange={
-              e => setPassword(e.target.value)}></input><br/>
-            <Login props={{username, password}}/>
-          </div>
+          <LogInForm />
           :
-          <div>
-            <div>Регистрация</div>
-            <input type="text" placeholder="Email" onChange={
-              e => setEmail(e.target.value)}></input><br/>
-            <input type="text" placeholder="Username" onChange={
-              e => setUsername(e.target.value)}></input><br/>
-            <input type="password" placeholder="Password" onChange={
-              e => setPassword(e.target.value)}></input><br/>
-            <Registration props={{email, username, password}}/>
-          </div>
+          <RegistrationForm />
       }
-    </div>
+    </Box>
   );
 };
 

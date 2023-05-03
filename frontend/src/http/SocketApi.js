@@ -10,12 +10,8 @@ export const fetchSockets = async () => {
   return response;
 };
 
-export const createSocket = async (props) => {
-  const response = await $host.post("api/v1/sockets/", props);
-  return response;
-};
-
-export const createUserSocket = async (props) => {
-  const response = await $authHost.post("api/v1/sockets/", props);
+export const createSocket = async ({full_url, isAuth}) => {
+  const host = isAuth ? $authHost : $host;
+  const response = await host.post("api/v1/sockets/", {full_url});
   return response;
 };

@@ -6,15 +6,21 @@ import { check } from "./http/UserApi";
 
 import { Context } from "./index";
 
+import "./styles/App.css";
+
 const App = () => {
   const { user } = useContext(Context);
 
-  useEffect(() => {
+  const checkUserAuth = () => {
     check()
       .then(response => {
         user.setIsAuth(true);
       })
       .catch(e => {});
+  };
+
+  useEffect(() => {
+    checkUserAuth();
   }, []);
 
   	return (

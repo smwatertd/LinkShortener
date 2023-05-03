@@ -1,37 +1,45 @@
+import { Box, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
 
 const Result = observer(() => {
-  const fullUrl = localStorage.getItem("fullUrl");
-  const shortUrl = localStorage.getItem("shortUrl");
+  const [fullUrl, setFullUrl] = useState("Отсутствует");
+  const [shortUrl, setShortUrl] = useState("Отсутствует");
+
+  useEffect(() => {
+    const localStorageFullUrl = localStorage.getItem("fullUrl");
+    const localStorageShortUrl = localStorage.getItem("shortUrl");
+
+    if (localStorageFullUrl) {
+      setFullUrl(localStorageFullUrl);
+    }
+    if (localStorageShortUrl) {
+      setShortUrl(localStorageShortUrl);
+    }
+  }, []);
 
   return (
-    <div>
-      Full Url:
-      {
-        fullUrl === null
-          ?
-          <div>
-            Отсутствует
-          </div>
-          :
-          <div>
-            {fullUrl}
-          </div>
-      }
+    <Box
+      sx={{
+        padding: 2,
+      }}
+    >
+      <Typography>
+        Full Url:
+      </Typography>
+      <Typography>
+        {fullUrl}
+      </Typography>
+
       <br/>
-      Short Url
-      {
-        shortUrl === null
-          ?
-          <div>
-            Отсутствует
-          </div>
-          :
-          <div>
-            {shortUrl}
-          </div>
-      }
-    </div>
+
+      <Typography>
+        Short Url:
+      </Typography>
+      <Typography>
+        {shortUrl}
+      </Typography>
+    </Box>
   );
 });
 
