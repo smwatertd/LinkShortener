@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 
-const Socket = ({socket}) => {
+const Socket = ({index, socket}) => {
   const { fullUrl, shortUrl, createdAt, views } = socket;
 
   return (
@@ -11,7 +11,7 @@ const Socket = ({socket}) => {
           paddingTop: 2,
         }}
       >
-        Full Url: {fullUrl}<br/>
+        {index}) Full Url: {fullUrl}<br/>
         Short Url: {shortUrl}<br/>
         Created At: {createdAt}<br/>
         Views: {views}

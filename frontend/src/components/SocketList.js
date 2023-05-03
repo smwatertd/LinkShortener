@@ -10,9 +10,10 @@ const SocketList = () => {
   return (
     <div>
       {
-        socketList.socketList.map(socket =>
-          <Socket key={socket.shortUrl} socket={socket}/>
-        )
+        socketList
+          .socketList
+          .slice(socketList.firstSocketIndex, socketList.lastSocketIndex)
+          .map(socket => <Socket key={socket.shortUrl} index={socket.index} socket={socket}/>)
       }
     </div>
   );
