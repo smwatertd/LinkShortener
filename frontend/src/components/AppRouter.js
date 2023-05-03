@@ -5,7 +5,7 @@ import { publicRoutes, privateRoutes } from "../utils/Routes";
 
 const AppRouter = () => {
   const isTokenExists = () => {
-    return !!localStorage.getItem("access");
+    return !!localStorage.getItem("refresh");
   };
 
   return (
