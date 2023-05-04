@@ -21,12 +21,11 @@ const Footer = observer(() => {
         bottom: 0,
         width: "100%",
         backgroundColor: "#28384A",
-        padding: 2,
       }}
     >
       <Typography
         sx={{
-          paddingBottom: 2,
+          padding: 2,
           textAlign: "center",
           color: "white",
           fontWeight: "bold",
@@ -38,6 +37,7 @@ const Footer = observer(() => {
 
       <Typography
         sx={{
+          paddingBottom: 2,
           textAlign: "center",
           color: "white",
         }}
