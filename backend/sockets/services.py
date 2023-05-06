@@ -28,6 +28,9 @@ def create_socket(user, full_url: str) -> Socket:
 
 
 def is_socket_exists(**kwargs) -> bool:
+    """
+    Существует ли сокет
+    """
     return bool(Socket.objects.filter(**kwargs))
 
 

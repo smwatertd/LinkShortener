@@ -1,11 +1,11 @@
-import sockets.serializers as serializers
-import sockets.services as services
-from sockets import exceptions
-
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+import sockets.serializers as serializers
+import sockets.services as services
+from sockets import exceptions
 
 
 class CreateDeleteSocketView(APIView):
