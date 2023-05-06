@@ -3,13 +3,14 @@ import linkShortener.services as services
 from linkShortener import exceptions
 
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
-class CreateSocketView(CreateAPIView):
+class CreateDeleteSocketView(APIView):
     """
-    Представление создания сокета
+    Представление создания и удаления сокета
     """
     serializer_class = serializers.CreateSocketSerializer
 
@@ -27,10 +28,20 @@ class CreateSocketView(CreateAPIView):
             status=status.HTTP_201_CREATED,
         )
 
+    def delete(self, request, pk, *args, **kwargs) -> Response:
+        if request.user.is_authenticated:
+            services.delete_socket_if_exists(
+                request.user,
+                pk,
+            )
+        return Response(
+            status=status.HTTP_204_NO_CONTENT,
+        )
+
 
 class RedirectView(RetrieveAPIView):
     """
-    Представление для перенаправления по короткому url
+    Представление перенаправления по короткому url
     """
     serializer_class = serializers.RedirectSerializer
 

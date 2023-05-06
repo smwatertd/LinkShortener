@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 
+from typing import Type, Union
+
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
@@ -10,10 +12,11 @@ from users import exceptions, serializers, services
 class UserView(ListCreateAPIView):
     """
     Представление пользователя
-    get: получение сокетов пользователя
-    post: создание нового пользователя
     """
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs) -> Response:
+        """
+        Получение сокетов пользователя
+        """
         if not request.user.is_authenticated:
             raise exceptions.NotAuthenticatedUser
         user_sockets = services.get_user_sockets(request.user.id)
@@ -23,7 +26,10 @@ class UserView(ListCreateAPIView):
         )
         return Response(serializer.data)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> Response:
+        """
+        Создание нового пользователя
+        """
         serializer = self.get_serializer_class()(data=request.data)
         if not serializer.is_valid():
             raise exceptions.UserFormIncorrect
@@ -39,7 +45,10 @@ class UserView(ListCreateAPIView):
             status=status.HTTP_201_CREATED,
         )
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Union[
+        Type[serializers.ListSocketSerializer],
+        Type[serializers.CreateUserSerializer],
+    ]:
         if self.request.method == 'GET':
             return serializers.ListSocketSerializer
         return serializers.CreateUserSerializer

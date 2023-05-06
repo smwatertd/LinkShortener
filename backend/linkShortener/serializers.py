@@ -15,6 +15,9 @@ class CreateSocketSerializer(serializers.ModelSerializer):
 
 
 class RedirectSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор перенаправления
+    """
     class Meta:
         model = Socket
         fields = (

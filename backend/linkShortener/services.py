@@ -2,7 +2,7 @@ from django.http import HttpRequest
 
 from linkShortener import utils
 from linkShortener.exceptions import ShortUrlNotFound
-from linkShortener.models import Ip, Socket
+from linkShortener.models import Ip, Socket, User
 
 
 def generate_short_url() -> str:
@@ -65,3 +65,13 @@ def get_or_create_ip(request: HttpRequest) -> Ip:
     """
     request_ip = utils.get_ip(request)
     return Ip.objects.get_or_create(address=request_ip)[0]
+
+
+def delete_socket_if_exists(author: User, short_url: str) -> None:
+    """
+    Удаление сокета по короткому url, если существует
+    """
+    Socket.objects.filter(
+        author=author,
+        short_url=short_url,
+    ).delete()
