@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from linkShortener.models import Socket
+from sockets.models import Socket
 
 from rest_framework import serializers
 

@@ -5,7 +5,7 @@ from app.settings import CHARACTERS, MAX_LENGTH
 
 from django.http import HttpRequest
 
-from linkShortener.models import Ip
+from sockets.models import Ip
 
 
 def generate_short_url() -> str:

@@ -1,6 +1,6 @@
-import linkShortener.serializers as serializers
-import linkShortener.services as services
-from linkShortener import exceptions
+import sockets.serializers as serializers
+import sockets.services as services
+from sockets import exceptions
 
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView

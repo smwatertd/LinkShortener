@@ -1,7 +1,6 @@
-
 from django.db.models.query import QuerySet
 
-from linkShortener.models import Socket
+from sockets.models import Socket
 
 
 def get_user_sockets(user_id: int) -> QuerySet[Socket]:

@@ -1,6 +1,6 @@
 from django.urls import path
 
-import linkShortener.views as views
+import sockets.views as views
 
 
 urlpatterns = [

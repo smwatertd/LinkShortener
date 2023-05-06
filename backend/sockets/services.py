@@ -1,8 +1,8 @@
 from django.http import HttpRequest
 
-from linkShortener import utils
-from linkShortener.exceptions import ShortUrlNotFound
-from linkShortener.models import Ip, Socket, User
+from sockets import utils
+from sockets.exceptions import ShortUrlNotFound
+from sockets.models import Ip, Socket, User
 
 
 def generate_short_url() -> str:

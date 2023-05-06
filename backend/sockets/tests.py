@@ -1,6 +1,6 @@
 from django.urls import reverse
 
-from linkShortener.models import Socket
+from sockets.models import Socket
 
 from rest_framework.test import APIClient, APITestCase
 
