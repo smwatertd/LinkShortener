@@ -13,7 +13,13 @@ const SocketList = () => {
         socketList
           .socketList
           .slice(socketList.firstSocketIndex, socketList.lastSocketIndex)
-          .map(socket => <Socket key={socket.shortUrl} index={socket.index} socket={socket}/>)
+          .map((socket, index) =>
+            <Socket
+              key={socket.shortUrl}
+              index={socketList.firstSocketIndex + index + 1}
+              socket={socket}
+            />
+          )
       }
     </div>
   );

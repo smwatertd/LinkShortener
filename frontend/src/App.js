@@ -15,6 +15,8 @@ const App = () => {
     check()
       .then(response => {
         user.setIsAuth(true);
+        // console.log(response);
+        // user.setUser()
       })
       .catch(e => {});
   };

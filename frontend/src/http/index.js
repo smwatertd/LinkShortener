@@ -14,12 +14,9 @@ const authHostConfig = config => {
 };
 
 const authHostError = async (error) => {
-  if (error.response.status === 401) {
-    const refresh = localStorage.getItem("refresh");
-    if (refresh === null) {
-      return Promise.reject(error);
-    }
+  const refresh = localStorage.getItem("refresh");
 
+  if (error.response.status === 401 && refresh) {
     await $host.post("api/token/refresh/", {
       refresh: refresh,
     })
@@ -30,7 +27,10 @@ const authHostError = async (error) => {
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
       });
+    return;
   }
+
+  return Promise.reject(error);
 };
 
 $authHost.interceptors.request.use(authHostConfig);

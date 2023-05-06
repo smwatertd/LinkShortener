@@ -17,17 +17,17 @@ const Profile = observer(() => {
   const pagesLimit = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const pagesCount = Math.ceil(socketList.socketList.length / pagesLimit);
-  socketList.setLastSocketIndex(currentPage * 10);
-  socketList.setFirstSocketIndex(socketList.lastSocketIndex - pagesLimit);
+  const lastSocketIndex = currentPage * 10;
+  const firstSocketIndex = lastSocketIndex - pagesLimit;
+  socketList.setLastSocketIndex(lastSocketIndex);
+  socketList.setFirstSocketIndex(firstSocketIndex);
 
-  const fetchUserSockets = () => {
+  const handleFetchUserSockets = () => {
     fetchSockets()
       .then(response => {
         socketList.setSocketList(response.data);
       })
-      .catch(error => {
-        window.location.reload();
-      });
+      .catch(error => {});
   };
 
   const scrollToTop = () => {
@@ -35,7 +35,7 @@ const Profile = observer(() => {
   };
 
   useEffect(() => {
-    fetchUserSockets();
+    handleFetchUserSockets();
   }, [user.isAuth]);
 
   useEffect(() => {

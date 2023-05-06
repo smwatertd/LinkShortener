@@ -12,7 +12,7 @@ const SocketForm = () => {
   const navigate = useNavigate();
   const [fullUrl, setFullUrl] = useState("https://youtube.com/");
 
-  const buttonClicked = async () => {
+  const confirmButtonClicked = async () => {
     await createSocket({full_url: fullUrl, isAuth: user.isAuth})
       .then(response => {
         localStorage.setItem("fullUrl", response.data.full_url);
@@ -44,7 +44,7 @@ const SocketForm = () => {
         sx={{
           background: "#28384A",
         }}
-        onClick={buttonClicked}
+        onClick={confirmButtonClicked}
         onChange={e => setFullUrl(e.target.value)}
       >
         Подтвердить

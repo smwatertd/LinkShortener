@@ -6,7 +6,7 @@ const Result = observer(() => {
   const [fullUrl, setFullUrl] = useState("Отсутствует");
   const [shortUrl, setShortUrl] = useState("Отсутствует");
 
-  useEffect(() => {
+  const handleShowResult = () => {
     const localStorageFullUrl = localStorage.getItem("fullUrl");
     const localStorageShortUrl = localStorage.getItem("shortUrl");
 
@@ -16,6 +16,10 @@ const Result = observer(() => {
     if (localStorageShortUrl) {
       setShortUrl(localStorageShortUrl);
     }
+  };
+
+  useEffect(() => {
+    handleShowResult();
   }, []);
 
   return (
@@ -30,9 +34,7 @@ const Result = observer(() => {
       <Typography>
         {fullUrl}
       </Typography>
-
       <br/>
-
       <Typography>
         Short Url:
       </Typography>

@@ -33,10 +33,14 @@ const Navbar = observer(() => {
   };
 
   return (
-    <Box sx={{
-      display: "flex",
-      justifyContent: "right",
-    }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "right",
+        paddingTop: 1,
+        paddingRight: 1,
+      }}
+    >
       {
         user.isAuth
           ?
@@ -44,27 +48,34 @@ const Navbar = observer(() => {
             <Button
               variant="contained"
               onClick={profileButtonClicked}
+              sx={{
+                marginRight: 1,
+              }}
             >
-              Profile
+              Профиль
             </Button>
             <Button
               variant="outlined"
               onClick={logOutButtonClicked}
             >
-              LogOut
+              Выйти
             </Button>
           </div>
           :
           <div>
             <Button
               variant="contained"
-              onClick={logInButtonClicked}>
-              Login
+              onClick={logInButtonClicked}
+              sx={{
+                marginRight: 1,
+              }}
+            >
+              Войти
             </Button>
             <Button
               variant="outlined"
               onClick={registrationButtonClicked}>
-              Registration
+              Зарегистрироваться
             </Button>
           </div>
       }

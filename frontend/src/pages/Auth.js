@@ -10,11 +10,12 @@ const Auth = () => {
   const isLogin = location.pathname === LOGIN_ROUTE;
 
   return (
-    <Box
-      sx={{
-        padding: 2,
-      }}
-    >
+    <Box sx={{
+      height: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}>
       {
         isLogin
           ?

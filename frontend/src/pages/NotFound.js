@@ -1,16 +1,40 @@
-import { Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+import { MAIN_ROUTE } from "../utils/Consts";
 
 const NotFound = () => {
+  const navigate = useNavigate();
+
+  const mainButtonClicked = () => {
+    navigate(MAIN_ROUTE);
+  };
+
   return (
-    <Typography
+    <Box
       sx={{
-        position: "absolute",
-        bottom: "50%",
-        left: "50%",
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      Not Found
-    </Typography>
+      <Typography
+        sx={{
+          textAlign: "center",
+          paddingBottom: 1,
+        }}
+      >
+        Not Found
+      </Typography>
+      <Button
+        variant="contained"
+        onClick={mainButtonClicked}
+      >
+        Главная
+      </Button>
+    </Box>
   );
 };
 

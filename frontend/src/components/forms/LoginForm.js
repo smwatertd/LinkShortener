@@ -1,9 +1,9 @@
-import { Typography, TextField, Button } from "@mui/material";
+import { Typography, TextField, Button, Box } from "@mui/material";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Context } from "../../index";
-import { MAIN_ROUTE } from "../../utils/Consts";
+import { MAIN_ROUTE, REGISTRATION_ROUTE } from "../../utils/Consts";
 import { logIn } from "../../http/UserApi";
 
 const LogInForm = () => {
@@ -12,34 +12,72 @@ const LogInForm = () => {
   const [ username, setUsername ] = useState("admin");
   const [ password, setPassword ] = useState("599523956qQ");
 
-  const buttonClicked = async () => {
-    await logIn({
-      username,
-      password,
-    })
-      .then(response => {
-        user.setIsAuth(true);
-      })
-      .finally(() => {
-        navigate(MAIN_ROUTE);
+  const loginButtonClicked = async () => {
+    try {
+      await logIn({
+        username,
+        password,
       });
+      user.setIsAuth(true);
+      navigate(MAIN_ROUTE);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const registrationButtonClicked = () => {
+    navigate(REGISTRATION_ROUTE);
   };
 
   return (
     <div>
-      <Typography>
+      <Typography
+        sx={{
+          textAlign: "center",
+          marginBottom: 1,
+        }}
+      >
         Войти в систему
       </Typography>
-      <TextField type="text" placeholder="Username" onChange={
-        e => setUsername(e.target.value)}></TextField><br/>
-      <TextField type="password" placeholder="Password" onChange={
-        e => setPassword(e.target.value)}></TextField><br/>
-      <Button
-        variant="contained"
-        onClick={buttonClicked}
+      <TextField
+        type="text"
+        placeholder="Имя пользователя"
+        onChange={event => setUsername(event.target.value)}
+        sx={{
+          width: "100%",
+        }}
+      />
+      <br/>
+      <TextField
+        type="password"
+        placeholder="Пароль"
+        onChange={event => setPassword(event.target.value)}
+        sx={{
+          width: "100%",
+        }}
+      />
+      <br/>
+      <Box
+        sx={{
+          marginTop: 1,
+        }}
       >
-        Войти
-      </Button>
+        <Button
+          variant="contained"
+          onClick={loginButtonClicked}
+          sx={{
+            marginRight: 1,
+          }}
+        >
+          Войти
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={registrationButtonClicked}
+        >
+          Зарегистрироваться
+        </Button>
+      </Box>
     </div>
   );
 };

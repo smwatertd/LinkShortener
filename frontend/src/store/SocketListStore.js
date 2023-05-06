@@ -44,4 +44,8 @@ export default class SocketListStore {
   get lastSocketIndex() {
     return this._lastSocketIndex;
   }
+
+  removeSocket(socketIndex) {
+    this._socketList.splice(socketIndex, 1);
+  }
 };
