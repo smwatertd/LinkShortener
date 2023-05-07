@@ -1,4 +1,4 @@
-from app.settings import AUTH_USER_MODEL as User
+from config.settings import AUTH_USER_MODEL as User
 
 from django.db import models
 

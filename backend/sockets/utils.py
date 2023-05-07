@@ -1,7 +1,7 @@
 from functools import reduce
 from random import sample
 
-from app.settings import CHARACTERS, MAX_LENGTH
+from config.settings import CHARACTERS, MAX_LENGTH
 
 from django.http import HttpRequest
 

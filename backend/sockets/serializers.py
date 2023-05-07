@@ -1,6 +1,6 @@
-from sockets.models import Socket
-
 from rest_framework import serializers
+
+from sockets.models import Socket
 
 
 class CreateSocketSerializer(serializers.ModelSerializer):
