@@ -1,3 +1,5 @@
+from typing import Type
+
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
@@ -12,31 +14,36 @@ class CreateDeleteSocketView(APIView):
     """
     Представление создания и удаления сокета
     """
-    serializer_class = serializers.CreateSocketSerializer
+    def _get_create_socket_serializer_class(self) -> Type[serializers.CreateSocketSerializer]:
+        """
+        Получение сериализатора создания сокета
+        """
+        return serializers.CreateSocketSerializer
+
+    def _get_socket_serializer_class(self) -> Type[serializers.SocketSerializer]:
+        """
+        Получение сериализатора сокета
+        """
+        return serializers.SocketSerializer
 
     def post(self, request, *args, **kwargs) -> Response:
-        serializer = self.serializer_class(data=request.data)
-        if not serializer.is_valid():
+        """
+        Создание сокета
+        """
+        create_socket_serializer = self._get_create_socket_serializer_class()(data=request.data)
+        if not create_socket_serializer.is_valid():
             raise exceptions.FullUrlIncorrect
 
-        socket = services.create_socket(
-            request.user,
-            serializer.data['full_url'],
-        )
-        return Response(
-            serializers.SocketSerializer(socket).data,
-            status=status.HTTP_201_CREATED,
-        )
+        socket = services.create_socket(request.user, **create_socket_serializer.data)
+        socket_serializer = self._get_socket_serializer_class()(socket)
+        return Response(socket_serializer.data, status=status.HTTP_201_CREATED)
 
-    def delete(self, request, pk, *args, **kwargs) -> Response:
-        if request.user.is_authenticated:
-            services.delete_socket_if_exists(
-                request.user,
-                pk,
-            )
-        return Response(
-            status=status.HTTP_204_NO_CONTENT,
-        )
+    def delete(self, request, pk: str, *args, **kwargs) -> Response:
+        """
+        Удаление сокета
+        """
+        services.delete_socket_if_exists(request.user, pk)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class RedirectView(RetrieveAPIView):
@@ -46,13 +53,11 @@ class RedirectView(RetrieveAPIView):
     serializer_class = serializers.RedirectSerializer
 
     def get(self, request, short_url: str, *args, **kwargs):
+        """
+        Получение полного url по короткому
+        """
         socket = services.get_socket(short_url=short_url)
-        services.add_ip_to_socket_views(
-            socket,
-            services.get_or_create_ip(request),
-        )
+        user_ip = services.get_or_create_ip(request)
+        services.add_ip_to_socket_views(socket, user_ip)
         serializer = self.serializer_class(socket)
-        return Response(
-            serializer.data,
-            status=status.HTTP_200_OK,
-        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
