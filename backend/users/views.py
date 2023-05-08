@@ -7,24 +7,24 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 
 from users import exceptions, serializers, services
+from users.paginators import UserSocketsPaginator
 
 
 class UserView(ListCreateAPIView):
     """
     Представление пользователя
     """
+    pagination_class = UserSocketsPaginator
+
     def get(self, request, *args, **kwargs) -> Response:
         """
         Получение сокетов пользователя
         """
-        if not request.user.is_authenticated:
-            raise exceptions.NotAuthenticatedUser
-        user_sockets = services.get_user_sockets(request.user.id)
-        serializer = self.get_serializer_class()(
-            user_sockets,
-            many=True,
-        )
-        return Response(serializer.data)
+        user_sockets = services.get_user_sockets(request.user)
+        user_sockets = user_sockets.order_by('pk')
+        paginated_sockets = self.pagination_class().paginate_queryset(user_sockets, request)
+        serializer = self.get_serializer_class()(paginated_sockets, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs) -> Response:
         """
@@ -33,17 +33,9 @@ class UserView(ListCreateAPIView):
         serializer = self.get_serializer_class()(data=request.data)
         if not serializer.is_valid():
             raise exceptions.UserFormIncorrect
-        serializer = serializer.data
-        User = get_user_model()
-        User.objects.create_user(
-            serializer['username'],
-            serializer['email'],
-            serializer['password'],
-        )
-        return Response(
-            {'status': 'success'},
-            status=status.HTTP_201_CREATED,
-        )
+
+        get_user_model().objects.create_user(**serializer.data)
+        return Response(status=status.HTTP_201_CREATED)
 
     def get_serializer_class(self) -> Union[
         Type[serializers.ListSocketSerializer],

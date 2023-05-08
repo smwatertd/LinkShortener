@@ -74,7 +74,5 @@ def delete_socket_if_exists(author: User, short_url: str) -> None:
     """
     Удаление сокета по короткому url, если существует
     """
-    Socket.objects.filter(
-        author=author,
-        short_url=short_url,
-    ).delete()
+    if author.is_authenticated:
+        Socket.objects.filter(author=author, short_url=short_url).delete()

@@ -42,7 +42,7 @@ class ListSocketSerializer(serializers.ModelSerializer):
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
-    Определение payload jwt токенов
+    Переопределение payload jwt токенов
     """
     @classmethod
     def get_token(cls, user):
