@@ -21,10 +21,14 @@ class UserView(ListCreateAPIView):
         Получение сокетов пользователя
         """
         user_sockets = services.get_user_sockets(request.user)
-        user_sockets = user_sockets.order_by('pk')
+        user_sockets = user_sockets.order_by('created_at')
         paginated_sockets = self.pagination_class().paginate_queryset(user_sockets, request)
-        serializer = self.get_serializer_class()(paginated_sockets, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginated_sockets = self.get_serializer_class()(paginated_sockets, many=True)
+        response_data = {
+            'count': user_sockets.count(),
+            'sockets': paginated_sockets.data,
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs) -> Response:
         """

@@ -101,7 +101,7 @@ class TestSockets(APITestCase):
 
         response = self.client.get(self.user_sockets_url)
 
-        sockets_count = len(response.data)
+        sockets_count = len(response.data.get('sockets', 0))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(sockets_count, 1)
 
