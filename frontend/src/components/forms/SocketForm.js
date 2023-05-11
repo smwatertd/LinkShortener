@@ -5,7 +5,7 @@ import { Box, Button, TextField } from "@mui/material";
 import { createSocket } from "../../http/SocketApi";
 import { Context } from "../../index";
 import { RESULT_ROUTE } from "../../utils/Consts";
-import { normalizeShortUrl } from "../../utils/LinksUtils";
+import { normalizeShortUrl } from "../../utils/SocketUtils";
 
 const SocketForm = () => {
   const { user } = useContext(Context);
@@ -13,7 +13,8 @@ const SocketForm = () => {
   const [fullUrl, setFullUrl] = useState("https://youtube.com/");
 
   const confirmButtonClicked = async () => {
-    await createSocket({full_url: fullUrl, isAuth: user.isAuth})
+    const isAuth = user.isAuth;
+    await createSocket({fullUrl, isAuth})
       .then(response => {
         localStorage.setItem("fullUrl", response.data.full_url);
         localStorage.setItem("shortUrl", normalizeShortUrl(response.data.short_url));

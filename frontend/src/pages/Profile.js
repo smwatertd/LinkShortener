@@ -1,31 +1,28 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { Box, Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { fetchSockets } from "../http/SocketApi";
 import { Context } from "../index";
-import { SocketList } from "../components/SocketList";
 import { MAIN_ROUTE } from "../utils/Consts";
+import { SocketList } from "../components/SocketList";
 import { CustomPagination } from "../components/CustomPagination";
 
 const Profile = observer(() => {
-  const { user } = useContext(Context);
-  const { socketList } = useContext(Context);
+  const [searchParams] = useSearchParams();
+  const { socketList, pagination } = useContext(Context);
   const navigate = useNavigate();
 
-  const pagesLimit = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-  const pagesCount = Math.ceil(socketList.socketList.length / pagesLimit);
-  const lastSocketIndex = currentPage * 10;
-  const firstSocketIndex = lastSocketIndex - pagesLimit;
-  socketList.setLastSocketIndex(lastSocketIndex);
-  socketList.setFirstSocketIndex(firstSocketIndex);
-
   const handleFetchUserSockets = () => {
-    fetchSockets()
+    fetchSockets({
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+    })
+      .then(response => response.data)
       .then(response => {
-        socketList.setSocketList(response.data);
+        socketList.setSockets(response.sockets);
+        pagination.setItemsCount(response.count);
       })
       .catch(error => {});
   };
@@ -34,13 +31,29 @@ const Profile = observer(() => {
     window.scrollTo(0, 0);
   };
 
-  useEffect(() => {
-    handleFetchUserSockets();
-  }, [user.isAuth]);
+  const navigateToMain = () => {
+    navigate(MAIN_ROUTE);
+  };
+
+  const setPage = () => {
+    const page = Number(searchParams.get("page"));
+    pagination.setPage(page);
+  };
+
+  const setPageSize = () => {
+    const pageSize = Number(searchParams.get("pageSize"));
+    pagination.setPageSize(pageSize);
+  };
 
   useEffect(() => {
+    setPage();
+    setPageSize();
+  }, []);
+
+  useEffect(() => {
+    handleFetchUserSockets();
     scrollToTop();
-  }, [currentPage]);
+  }, [pagination.page]);
 
   return (
     <div>
@@ -49,41 +62,39 @@ const Profile = observer(() => {
           display: "flex",
           backgroundColor: "#28384A",
           alignItems: "center",
-          paddingLeft: 2,
-          paddingTop: 1,
-          paddingBottom: 1,
+          padding: 2,
         }}
       >
         <Typography
           sx={{
             color: "white",
-            width: "90%",
           }}
         >
           Ваш профиль
         </Typography>
         <Button
-          onClick={event => navigate(MAIN_ROUTE)}
+          sx={{
+            position: "absolute",
+            marginRight: 2,
+            right: 0,
+          }}
+          onClick={event => navigateToMain()}
         >
           Главная
         </Button>
       </Box>
 
       {
-        socketList.socketList.length === 0
+        socketList.sockets
           ?
+          <div>
+            <SocketList />
+            <CustomPagination />
+          </div>
+          :
           <Typography>
             У вас нет записей
           </Typography>
-          :
-          <div>
-            <SocketList />
-            <CustomPagination props={{
-              pagesCount,
-              currentPage,
-              setCurrentPage,
-            }}/>
-          </div>
       }
     </div>
   );

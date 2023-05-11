@@ -5,21 +5,18 @@ import { Context } from "../index";
 import { Socket } from "./Socket";
 
 const SocketList = () => {
-  const { socketList } = useContext(Context);
+  const { socketList, pagination } = useContext(Context);
+  let index = pagination.firstItemIndex;
 
   return (
     <div>
       {
         socketList
-          .socketList
-          .slice(socketList.firstSocketIndex, socketList.lastSocketIndex)
-          .map((socket, index) =>
-            <Socket
-              key={socket.shortUrl}
-              index={socketList.firstSocketIndex + index + 1}
-              socket={socket}
-            />
-          )
+          .sockets
+          .map(socket => {
+            index += 1;
+            return <Socket key={socket.shortUrl} index={index} socket={socket}/>;
+          })
       }
     </div>
   );

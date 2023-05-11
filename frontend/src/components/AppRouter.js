@@ -4,14 +4,14 @@ import { Routes, Route }from "react-router-dom";
 import { publicRoutes, privateRoutes } from "../utils/Routes";
 
 const AppRouter = () => {
-  const isTokenExists = () => {
+  const isRefreshTokenExists = () => {
     return !!localStorage.getItem("refresh");
   };
 
   return (
     <Routes>
       {
-        isTokenExists() && privateRoutes.map(({path, element}) =>
+        isRefreshTokenExists() && privateRoutes.map(({path, element}) =>
           <Route key={path} path={path} element={element} exact/>
         )
       }

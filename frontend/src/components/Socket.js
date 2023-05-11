@@ -3,16 +3,14 @@ import { Box, Button, Typography } from "@mui/material";
 
 import { deleteSocket } from "../http/SocketApi";
 import { Context } from "../index";
-import { getShortUrl } from "../utils/LinksUtils";
+import { normalizeDate, normalizeShortUrl } from "../utils/SocketUtils";
 
 const Socket = ({index, socket}) => {
   const { socketList } = useContext(Context);
-  const { fullUrl, shortUrl, createdAt, views } = socket;
 
   const deleteButtonClicked = async () => {
-    await deleteSocket({
-      shortUrl: getShortUrl(shortUrl),
-    })
+    const shortUrl = socket.shortUrl;
+    await deleteSocket({shortUrl})
       .then(response => {
         socketList.removeSocket(index - 1);
       })
@@ -28,10 +26,10 @@ const Socket = ({index, socket}) => {
           paddingBottom: 1,
         }}
       >
-        {index}) Full Url: {fullUrl}<br/>
-        Short Url: {shortUrl}<br/>
-        Created At: {createdAt}<br/>
-        Views: {views}
+        {index}) Full Url: {socket.fullUrl}<br/>
+        Short Url: {normalizeShortUrl(socket.shortUrl)}<br/>
+        Created At: {normalizeDate(socket.createdAt)}<br/>
+        Views: {socket.views}
       </Typography>
       <Button
         variant="contained"
