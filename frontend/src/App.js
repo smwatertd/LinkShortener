@@ -11,12 +11,14 @@ import "./styles/App.css";
 const App = () => {
   const { user } = useContext(Context);
 
-  const checkUserAuth = () => {
-    check()
-      .then(response => {
-        user.setIsAuth(true);
-      })
-      .catch(e => {});
+  const checkUserAuth = async () => {
+    try {
+      await check();
+    } catch(error) {
+      console.error(error);
+      return;
+    }
+    user.setIsAuth(true);
   };
 
   useEffect(() => {
