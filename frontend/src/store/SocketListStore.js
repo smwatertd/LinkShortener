@@ -23,7 +23,7 @@ export default class SocketListStore {
     return this._sockets;
   }
 
-  removeFromSockets(index) {
+  removeSocket(index) {
     this._sockets.splice(index, 1);
   }
 }

@@ -1,12 +1,13 @@
 import { useContext } from "react";
+import { observer } from "mobx-react-lite";
 
 import { Context } from "../index";
 
 import { Socket } from "./Socket";
 
-const SocketList = () => {
+const SocketList = observer(() => {
   const { socketList, pagination } = useContext(Context);
-  let index = pagination.firstItemIndex;
+  let num = pagination.firstItemIndex;
 
   return (
     <div>
@@ -14,12 +15,12 @@ const SocketList = () => {
         socketList
           .sockets
           .map(socket => {
-            index += 1;
-            return <Socket key={socket.shortUrl} index={index} socket={socket}/>;
+            num += 1;
+            return <Socket key={socket.shortUrl} num={num} socket={socket}/>;
           })
       }
     </div>
   );
-};
+});
 
 export { SocketList };
