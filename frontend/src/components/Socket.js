@@ -7,23 +7,26 @@ import { Context } from "../index";
 import { normalizeDate, normalizeShortUrl } from "../utils/SocketUtils";
 
 const Socket = ({num, socket}) => {
-  const { socketList, pagination } = useContext(Context);
   const navigate = useNavigate();
+  const { socketList, pagination } = useContext(Context);
 
   const deleteButtonClicked = async () => {
-    const shortUrl = socket.shortUrl;
-    await deleteSocket({shortUrl})
-      .then(response => {
-        if (socketList.sockets.length === 1) {
-          navigateToPrevPage();
-        }
-        socketList.removeSocket(num - 1 - pagination.firstItemIndex);
-      })
-      .catch(error => {});
+    try {
+      await deleteSocket({
+        shortUrl: socket.shortUrl,
+      });
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+    socketList.removeSocket(num - 1 - pagination.firstItemIndex);
+    if (!socketList.sockets.length) {
+      pagination.setPage(pagination.page - 1);
+      navigateToPreviousPage();
+    }
   };
 
-  const navigateToPrevPage = () => {
-    pagination.setPage(pagination.page - 1);
+  const navigateToPreviousPage = () => {
     navigate({
       search: createSearchParams({
         page: pagination.page,

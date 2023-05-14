@@ -8,23 +8,22 @@ import { RESULT_ROUTE } from "../../utils/Consts";
 import { normalizeShortUrl } from "../../utils/SocketUtils";
 
 const SocketForm = () => {
-  const { user } = useContext(Context);
   const navigate = useNavigate();
-  const [fullUrl, setFullUrl] = useState("https://youtube.com/");
+  const { user } = useContext(Context);
+  const [fullUrl, setFullUrl] = useState("");
 
   const confirmButtonClicked = async () => {
+    let response;
     const isAuth = user.isAuth;
-    await createSocket({fullUrl, isAuth})
-      .then(response => {
-        localStorage.setItem("fullUrl", response.data.full_url);
-        localStorage.setItem("shortUrl", normalizeShortUrl(response.data.short_url));
-      })
-      .catch(error => {
-        return;
-      })
-      .finally(() => {
-        navigate(RESULT_ROUTE);
-      });
+    try {
+      response = await createSocket({fullUrl, isAuth});
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+    localStorage.setItem("fullUrl", response.data.full_url);
+    localStorage.setItem("shortUrl", normalizeShortUrl(response.data.short_url));
+    navigate(RESULT_ROUTE);
   };
 
   return (

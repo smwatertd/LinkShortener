@@ -6,31 +6,28 @@ import { Context } from "../index";
 import { ERROR_ROUTE } from "../utils/Consts";
 
 const Redirect = () => {
-  const { redirect } = useContext(Context);
-  const shortUrl = useParams("shortUrl");
   const navigate = useNavigate();
+  const shortUrl = useParams("shortUrl");
+  const { redirect } = useContext(Context);
 
-  redirect.setIsRedirect(true);
+  const handleRedirect = async () => {
+    let response;
+    
+    try {
+      response = await fetchFullUrl(shortUrl);
+    } catch (error) {
+      redirect.setIsRedirect(false);
+      navigate(ERROR_ROUTE);
+      return;
+    }
 
-  const handleRedirect = () => {
-    fetchFullUrl(shortUrl)
-      .then(response => {
-        window.location = response.data.full_url;
-      })
-      .catch(error => {
-        redirect.setIsRedirect(false);
-        navigate(ERROR_ROUTE);
-      });
+    window.location = response.data["full_url"];
   };
 
   useEffect(() => {
+    redirect.setIsRedirect(true);
     handleRedirect();
   }, []);
-
-
-  return (
-    <></>
-  );
 };
 
 export { Redirect };

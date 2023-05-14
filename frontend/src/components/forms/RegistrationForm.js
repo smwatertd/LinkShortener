@@ -7,31 +7,27 @@ import { Context } from "../../index";
 import { LOGIN_ROUTE, MAIN_ROUTE } from "../../utils/Consts";
 
 const RegistrationForm = () => {
-  const { user } = useContext(Context);
   const navigate = useNavigate();
-  const [ username, setUsername ] = useState("admin");
-  const [ password, setPassword ] = useState("599523956qQ");
-  const [ email, setEmail] = useState("admin@gmail.com");
+  const { user } = useContext(Context);
+  const [ registrationForm, setRegistrationForm ] = useState({
+    email: "",
+    username: "",
+    password: "",
+  });
 
   const registrationButtonClicked = async () => {
+    const logInForm = {...registrationForm};
+    delete logInForm["email"];
+
     try {
-      await registration({
-        email,
-        username,
-        password,
-      });
-
-      await logIn({
-        username,
-        password,
-      });
-
-      user.setIsAuth(true);
-      navigate(MAIN_ROUTE);
+      await registration(registrationForm);
+      await logIn(logInForm);
     } catch (error) {
-      console.log(error.message);
+      console.error(error);
       return;
     }
+    user.setIsAuth(true);
+    navigate(MAIN_ROUTE);
   };
 
   const loginButtonClicked = () => {
@@ -50,8 +46,8 @@ const RegistrationForm = () => {
       </Typography>
       <TextField
         type="text"
-        placeholder="Email"
-        onChange={event => setEmail(event.target.value)}
+        placeholder="Адрес эл.почты"
+        onChange={event => setRegistrationForm({...registrationForm, email: event.target.value})}
         sx={{
           width: "100%",
         }}
@@ -59,8 +55,8 @@ const RegistrationForm = () => {
       <br/>
       <TextField
         type="text"
-        placeholder="Username"
-        onChange={event => setUsername(event.target.value)}
+        placeholder="Имя пользователя"
+        onChange={event => setRegistrationForm({...registrationForm, username: event.target.value})}
         sx={{
           width: "100%",
         }}
@@ -68,8 +64,8 @@ const RegistrationForm = () => {
       <br/>
       <TextField
         type="password"
-        placeholder="Password"
-        onChange={event => setPassword(event.target.value)}
+        placeholder="Пароль"
+        onChange={event => setRegistrationForm({...registrationForm, password: event.target.value})}
         sx={{
           width: "100%",
         }}

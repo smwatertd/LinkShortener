@@ -9,9 +9,7 @@ const Footer = observer(() => {
   const { redirect } = useContext(Context);
 
   if (redirect.isRedirect) {
-    return (
-      <></>
-    );
+    return;
   }
 
   return (
@@ -31,8 +29,9 @@ const Footer = observer(() => {
           fontWeight: "bold",
         }}
       >
-        Link Shortener is a tool that helps to reduce long
-        URLs to shorter and more manageable
+        Link Shortener - инструмент, который поможет вам сократить длиииные ссылки,
+        <br/>
+        сделав их более коротким и управляемыми
       </Typography>
 
       <Typography
@@ -42,13 +41,13 @@ const Footer = observer(() => {
           color: "white",
         }}
       >
-        It is an important tool in today's online space,
-        especially for those who often share links on various platforms.
+        Это важный инструмент в современном онлайн-пространстве, особенно для тех,
         <br/>
-        From individuals to large organizations,
-        link shortening tools provide a simple and effective way to share information
+        кто часто делится ссылками на различных платформах.
         <br/>
-        and track link effectiveness in an easy and user-friendly way
+        Link Shortener - инструмент предназначенный как для частных лиц, так и для крупных организаций,
+        <br/>
+        обеспечивающий простой и эффективный способ обмена ссылками
       </Typography>
     </Box>
   );

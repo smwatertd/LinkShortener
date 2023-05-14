@@ -1,48 +1,45 @@
-import { Box, Typography } from "@mui/material";
-import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const Result = observer(() => {
-  const [fullUrl, setFullUrl] = useState("Отсутствует");
-  const [shortUrl, setShortUrl] = useState("Отсутствует");
+import { SocketCard } from "../components/SocketCard";
+import { MAIN_ROUTE } from "../utils/Consts";
 
-  const handleShowResult = () => {
-    const localStorageFullUrl = localStorage.getItem("fullUrl");
-    const localStorageShortUrl = localStorage.getItem("shortUrl");
+const Result = () => {
+  const navigate = useNavigate();
 
-    if (localStorageFullUrl) {
-      setFullUrl(localStorageFullUrl);
-    }
-    if (localStorageShortUrl) {
-      setShortUrl(localStorageShortUrl);
-    }
+  const mainButtonClicked = () => {
+    navigate(MAIN_ROUTE);
   };
-
-  useEffect(() => {
-    handleShowResult();
-  }, []);
 
   return (
     <Box
       sx={{
-        padding: 2,
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <Typography>
-        Full Url:
-      </Typography>
-      <Typography>
-        {fullUrl}
-      </Typography>
-      <br/>
-      <Typography>
-        Short Url:
-      </Typography>
-      <Typography>
-        {shortUrl}
-      </Typography>
+      <Box
+        sx={{
+          padding: 5,
+          borderRadius: 2,
+          background: "#28384A",
+        }}
+      >
+        <SocketCard />
+        <Box>
+          <Button
+            onClick={mainButtonClicked}
+            variant="outlined"
+          >
+            Главная
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
-});
+};
 
 export { Result };

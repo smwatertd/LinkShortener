@@ -1,17 +1,10 @@
 import axios from "axios";
 
-const $host = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-});
+import { $host } from "./index.host";
 
 const $authHost = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
-
-const authHostConfig = config => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem("access")}`;
-  return config;
-};
 
 const refreshToken = async () => {
   try {
@@ -25,6 +18,11 @@ const refreshToken = async () => {
   }
 };
 
+const authHostConfig = config => {
+  config.headers.Authorization = `Bearer ${localStorage.getItem("access")}`;
+  return config;
+};
+
 const authHostError = async (error) => {
   const originalRequest = error.config;
   if (error.response.status === 401 && !originalRequest._isRetry) {
@@ -33,11 +31,11 @@ const authHostError = async (error) => {
     originalRequest.headers.Authorization = `Bearer ${localStorage.getItem("access")}`;
     return axios(originalRequest);
   }
-  
+
   return Promise.reject(error);
 };
 
 $authHost.interceptors.request.use(authHostConfig);
 $authHost.interceptors.response.use(response => response, authHostError);
 
-export { $host, $authHost };
+export { $authHost };

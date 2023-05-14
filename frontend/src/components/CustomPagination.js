@@ -8,12 +8,12 @@ const CustomPagination = () => {
   const navigate = useNavigate();
   const { pagination } = useContext(Context);
 
-  const setPage = (page) => {
+  const changePage = (page) => {
     pagination.setPage(page);
-    navigateToPage();
+    navigateToNewPage();
   };
 
-  const navigateToPage = () => {
+  const navigateToNewPage = () => {
     navigate({
       search: createSearchParams({
         page: pagination.page,
@@ -29,7 +29,7 @@ const CustomPagination = () => {
       }}
       count={pagination.pagesCount}
       page={pagination.page}
-      onChange={(event, value) => setPage(value)}
+      onChange={(event, page) => changePage(page)}
     />
   );
 };

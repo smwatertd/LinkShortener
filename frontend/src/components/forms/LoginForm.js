@@ -7,22 +7,22 @@ import { MAIN_ROUTE, REGISTRATION_ROUTE } from "../../utils/Consts";
 import { logIn } from "../../http/UserApi";
 
 const LogInForm = () => {
-  const { user } = useContext(Context);
   const navigate = useNavigate();
-  const [ username, setUsername ] = useState("admin");
-  const [ password, setPassword ] = useState("599523956qQ");
+  const { user } = useContext(Context);
+  const [ logInForm, setLogInForm ] = useState({
+    username: "",
+    password: "",
+  });
 
   const loginButtonClicked = async () => {
     try {
-      await logIn({
-        username,
-        password,
-      });
-      user.setIsAuth(true);
-      navigate(MAIN_ROUTE);
+      await logIn(logInForm);
     } catch (error) {
-      console.log(error.message);
+      console.error(error);
+      return;
     }
+    user.setIsAuth(true);
+    navigate(MAIN_ROUTE);
   };
 
   const registrationButtonClicked = () => {
@@ -42,7 +42,7 @@ const LogInForm = () => {
       <TextField
         type="text"
         placeholder="Имя пользователя"
-        onChange={event => setUsername(event.target.value)}
+        onChange={event => setLogInForm({...logInForm, username: event.target.value})}
         sx={{
           width: "100%",
         }}
@@ -51,7 +51,7 @@ const LogInForm = () => {
       <TextField
         type="password"
         placeholder="Пароль"
-        onChange={event => setPassword(event.target.value)}
+        onChange={event => setLogInForm({...logInForm, password: event.target.value})}
         sx={{
           width: "100%",
         }}

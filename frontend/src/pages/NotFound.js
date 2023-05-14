@@ -26,7 +26,7 @@ const NotFound = () => {
           paddingBottom: 1,
         }}
       >
-        Not Found
+        Страница не найдена. Пожалуйста, проверьте ссылку
       </Typography>
       <Button
         variant="contained"

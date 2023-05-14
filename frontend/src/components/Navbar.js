@@ -12,8 +12,8 @@ import {
 import { logOut } from "../http/UserApi";
 
 const Navbar = observer(() => {
-  const { user } = useContext(Context);
   const navigate = useNavigate();
+  const { user } = useContext(Context);
 
   const profileButtonClicked = () => {
     navigate(PROFILE_ROUTE);

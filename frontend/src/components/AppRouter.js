@@ -1,9 +1,10 @@
 import React from "react";
 import { Routes, Route }from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 import { publicRoutes, privateRoutes } from "../utils/Routes";
 
-const AppRouter = () => {
+const AppRouter = observer(() => {
   const isRefreshTokenExists = () => {
     return !!localStorage.getItem("refresh");
   };
@@ -22,6 +23,6 @@ const AppRouter = () => {
       }
     </Routes>
   );
-};
+});
 
 export default AppRouter;

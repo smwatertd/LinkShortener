@@ -11,9 +11,7 @@ const Header = observer(() => {
   const { redirect } = useContext(Context);
 
   if (redirect.isRedirect) {
-    return (
-      <></>
-    );
+    return;
   }
 
   return (
@@ -44,7 +42,7 @@ const Header = observer(() => {
           color: "white",
         }}
       >
-        Fast and simple URL Shortener
+        Быстрый и простой сократитель ссылок
       </Typography>
     </Box>
   );

@@ -10,21 +10,25 @@ import { SocketList } from "../components/SocketList";
 import { CustomPagination } from "../components/CustomPagination";
 
 const Profile = observer(() => {
-  const [searchParams] = useSearchParams();
-  const { socketList, pagination } = useContext(Context);
   const navigate = useNavigate();
+  const [ searchParams ] = useSearchParams();
+  const { socketList, pagination } = useContext(Context);
 
-  const handleFetchUserSockets = () => {
-    fetchSockets({
-      page: pagination.page,
-      pageSize: pagination.pageSize,
-    })
-      .then(response => response.data)
-      .then(response => {
-        socketList.setSockets(response.sockets);
-        pagination.setItemsCount(response.count);
-      })
-      .catch(error => {});
+  const handleFetchUserSockets = async () => {
+    let response;
+
+    try {
+      response = await fetchSockets({
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+      });
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+
+    socketList.setSockets(response.data.sockets);
+    pagination.setItemsCount(response.data.count);
   };
 
   const scrollToTop = () => {
@@ -85,14 +89,18 @@ const Profile = observer(() => {
       </Box>
 
       {
-        socketList.sockets
+        socketList.sockets.length
           ?
           <div>
             <SocketList />
             <CustomPagination />
           </div>
           :
-          <Typography>
+          <Typography
+            sx={{
+              padding: 2,
+            }}
+          >
             У вас нет записей
           </Typography>
       }
