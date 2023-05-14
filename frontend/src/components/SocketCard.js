@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import { ERROR_ROUTE } from "../utils/Consts";
+
+import { CopyButton } from "./ui/CopyButton";
 
 const SocketCard = observer(() => {
   const navigate = useNavigate();
@@ -26,24 +27,6 @@ const SocketCard = observer(() => {
       fullUrl,
       shortUrl,
     });
-  };
-
-  const fullUrlCopyButtonClicked = async () => {
-    try {
-      await navigator.clipboard.writeText(socket.fullUrl);
-    } catch (error) {
-      console.error(error);
-      return;
-    }
-  };
-
-  const shortUrlCopyButtonClicked = async () => {
-    try {
-      await navigator.clipboard.writeText(socket.shortUrl);
-    } catch (error) {
-      console.error(error);
-      return;
-    }
   };
 
   useEffect(() => {
@@ -70,14 +53,9 @@ const SocketCard = observer(() => {
           Полный URL: {socket.fullUrl}
           <br/>
         </Typography>
-        <IconButton
-          onClick={fullUrlCopyButtonClicked}
-          sx={{
-            color: "#1976d2",
-          }}
-        >
-          <ContentCopyOutlinedIcon />
-        </IconButton>
+        <CopyButton
+          item={socket.fullUrl}
+        />
       </Box>
       <Box
         sx={{
@@ -93,14 +71,9 @@ const SocketCard = observer(() => {
           Короткий URL: {socket.shortUrl}
           <br/>
         </Typography>
-        <IconButton
-          onClick={shortUrlCopyButtonClicked}
-          sx={{
-            color: "#1976d2",
-          }}
-        >
-          <ContentCopyOutlinedIcon />
-        </IconButton>
+        <CopyButton
+          item={socket.shortUrl}
+        />
       </Box>
     </Box>
   );

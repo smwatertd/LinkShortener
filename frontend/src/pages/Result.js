@@ -1,16 +1,9 @@
-import { Box, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
 
 import { SocketCard } from "../components/SocketCard";
-import { MAIN_ROUTE } from "../utils/Consts";
+import { MainButton } from "../components/ui/MainButton";
 
 const Result = () => {
-  const navigate = useNavigate();
-
-  const mainButtonClicked = () => {
-    navigate(MAIN_ROUTE);
-  };
-
   return (
     <Box
       sx={{
@@ -29,14 +22,7 @@ const Result = () => {
         }}
       >
         <SocketCard />
-        <Box>
-          <Button
-            onClick={mainButtonClicked}
-            variant="outlined"
-          >
-            Главная
-          </Button>
-        </Box>
+        <MainButton />
       </Box>
     </Box>
   );

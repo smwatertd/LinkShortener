@@ -1,16 +1,15 @@
 import { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { Box, Button, Typography } from "@mui/material";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 import { fetchSockets } from "../http/SocketApi";
 import { Context } from "../index";
-import { MAIN_ROUTE } from "../utils/Consts";
 import { SocketList } from "../components/SocketList";
 import { CustomPagination } from "../components/CustomPagination";
+import { MainButton } from "../components/ui/MainButton";
 
 const Profile = observer(() => {
-  const navigate = useNavigate();
   const [ searchParams ] = useSearchParams();
   const { socketList, pagination } = useContext(Context);
 
@@ -33,10 +32,6 @@ const Profile = observer(() => {
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
-  };
-
-  const navigateToMain = () => {
-    navigate(MAIN_ROUTE);
   };
 
   const setPage = () => {
@@ -76,34 +71,35 @@ const Profile = observer(() => {
         >
           Ваш профиль
         </Typography>
-        <Button
+        <MainButton
           sx={{
             position: "absolute",
             marginRight: 2,
             right: 0,
           }}
-          onClick={event => navigateToMain()}
-        >
-          Главная
-        </Button>
+        />
       </Box>
 
-      {
-        socketList.sockets.length
-          ?
-          <div>
-            <SocketList />
-            <CustomPagination />
-          </div>
-          :
-          <Typography
-            sx={{
-              padding: 2,
-            }}
-          >
-            У вас нет записей
-          </Typography>
-      }
+      <Box
+        sx={{
+          paddingLeft: 2,
+          paddingTop: 2,
+          paddingRight: 2,
+        }}
+      >
+        {
+          socketList.sockets.length
+            ?
+            <div>
+              <SocketList />
+              <CustomPagination />
+            </div>
+            :
+            <Typography>
+              У вас нет записей
+            </Typography>
+        }
+      </Box>
     </div>
   );
 });

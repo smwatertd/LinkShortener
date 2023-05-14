@@ -1,15 +1,8 @@
-import { Box, Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
 
-import { MAIN_ROUTE } from "../utils/Consts";
+import { MainButton } from "../components/ui/MainButton";
 
 const NotFound = () => {
-  const navigate = useNavigate();
-
-  const mainButtonClicked = () => {
-    navigate(MAIN_ROUTE);
-  };
-
   return (
     <Box
       sx={{
@@ -28,12 +21,7 @@ const NotFound = () => {
       >
         Страница не найдена. Пожалуйста, проверьте ссылку
       </Typography>
-      <Button
-        variant="contained"
-        onClick={mainButtonClicked}
-      >
-        Главная
-      </Button>
+      <MainButton />
     </Box>
   );
 };

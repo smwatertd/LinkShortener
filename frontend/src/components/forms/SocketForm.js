@@ -14,13 +14,17 @@ const SocketForm = () => {
 
   const confirmButtonClicked = async () => {
     let response;
-    const isAuth = user.isAuth;
+
     try {
-      response = await createSocket({fullUrl, isAuth});
+      response = await createSocket({
+        fullUrl,
+        isAuth: user.isAuth,
+      });
     } catch (error) {
       console.error(error);
       return;
     }
+
     localStorage.setItem("fullUrl", response.data.full_url);
     localStorage.setItem("shortUrl", normalizeShortUrl(response.data.short_url));
     navigate(RESULT_ROUTE);

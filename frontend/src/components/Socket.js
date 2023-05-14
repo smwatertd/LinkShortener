@@ -1,10 +1,12 @@
 import { useContext } from "react";
-import { Box, Button, Typography } from "@mui/material";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import { Box, Button, Typography } from "@mui/material";
 
-import { deleteSocket } from "../http/SocketApi";
 import { Context } from "../index";
+import { deleteSocket } from "../http/SocketApi";
 import { normalizeDate, normalizeShortUrl } from "../utils/SocketUtils";
+
+import { CopyButton } from "./ui/CopyButton";
 
 const Socket = ({num, socket}) => {
   const navigate = useNavigate();
@@ -35,31 +37,82 @@ const Socket = ({num, socket}) => {
     });
   };
 
+  const isLastSocket = () => {
+    return socketList.sockets.length === num - pagination.firstItemIndex;
+  };
+
   return (
-    <Box>
-      <Typography
+    <Box
+      sx={{
+        paddingBottom: 1,
+      }}
+    >
+      <Box
         sx={{
-          paddingLeft: 2,
-          paddingTop: 2,
-          paddingBottom: 1,
+          display: "flex",
+          alignItems:"center",
         }}
       >
-        {num}) Full Url: {socket.fullUrl}<br/>
-        Short Url: {normalizeShortUrl(socket.shortUrl)}<br/>
-        Created At: {normalizeDate(socket.createdAt)}<br/>
-        Views: {socket.views}
-      </Typography>
-      <Button
-        variant="contained"
-        onClick={deleteButtonClicked}
+        <Typography>
+          {num}) Полный URL: {socket.fullUrl}
+        </Typography>
+        <CopyButton
+          item={socket.fullUrl}
+        />
+      </Box>
+
+      <Box
         sx={{
-          marginLeft: 2,
+          display: "flex",
+          alignItems: "center",
           marginBottom: 1,
         }}
       >
-        Удалить
-      </Button>
-      <hr/>
+        <Typography>
+          Короткий URL: {normalizeShortUrl(socket.shortUrl)}
+        </Typography>
+        <CopyButton
+          item={normalizeShortUrl(socket.shortUrl)}
+        />
+      </Box>
+
+      <Typography
+        sx={{
+          marginBottom: 1,
+        }}
+      >
+        Дата создания: {normalizeDate(socket.createdAt)}
+      </Typography>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: 1,
+        }}
+      >
+        <Typography
+          sx={{
+            marginRight: 2,
+          }}
+        >
+          Просмотры: {socket.views}
+        </Typography>
+
+        <Button
+          variant="contained"
+          onClick={deleteButtonClicked}
+        >
+          Удалить
+        </Button>
+      </Box>
+      {
+        isLastSocket()
+          ?
+          <></>
+          :
+          <hr/>
+      }
     </Box>
   );
 };

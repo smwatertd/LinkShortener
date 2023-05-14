@@ -22,11 +22,12 @@ const CustomPagination = () => {
     });
   };
 
+  if (pagination.pagesCount === 1) {
+    return;
+  }
+
   return (
     <Pagination
-      sx={{
-        marginTop: 2,
-      }}
       count={pagination.pagesCount}
       page={pagination.page}
       onChange={(event, page) => changePage(page)}

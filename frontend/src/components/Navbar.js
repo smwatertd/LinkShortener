@@ -9,7 +9,8 @@ import {
   PROFILE_ROUTE,
   REGISTRATION_ROUTE,
 } from "../utils/Consts";
-import { logOut } from "../http/UserApi";
+
+import { LogOutButton } from "./ui/LogOutButton";
 
 const Navbar = observer(() => {
   const navigate = useNavigate();
@@ -17,11 +18,6 @@ const Navbar = observer(() => {
 
   const profileButtonClicked = () => {
     navigate(PROFILE_ROUTE);
-  };
-
-  const logOutButtonClicked = () => {
-    logOut();
-    user.setIsAuth(false);
   };
 
   const logInButtonClicked = () => {
@@ -54,12 +50,7 @@ const Navbar = observer(() => {
             >
               Профиль
             </Button>
-            <Button
-              variant="outlined"
-              onClick={logOutButtonClicked}
-            >
-              Выйти
-            </Button>
+            <LogOutButton />
           </div>
           :
           <div>
