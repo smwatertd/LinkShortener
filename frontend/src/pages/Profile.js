@@ -8,12 +8,14 @@ import { Context } from "../index";
 import { SocketList } from "../components/SocketList";
 import { CustomPagination } from "../components/CustomPagination";
 import { MainButton } from "../components/ui/MainButton";
+import { LoadingIndicatior } from "../components/LoadingIndicator";
 
 const Profile = observer(() => {
   const [ searchParams ] = useSearchParams();
-  const { socketList, pagination } = useContext(Context);
+  const { socketList, pagination, loading } = useContext(Context);
 
   const handleFetchUserSockets = async () => {
+    loading.setIsProfileLoading(true);
     let response;
 
     try {
@@ -21,13 +23,13 @@ const Profile = observer(() => {
         page: pagination.page,
         pageSize: pagination.pageSize,
       });
+      socketList.setSockets(response.data.sockets);
+      pagination.setItemsCount(response.data.count);
     } catch (error) {
       console.error(error);
-      return;
+    } finally {
+      loading.setIsProfileLoading(false);
     }
-
-    socketList.setSockets(response.data.sockets);
-    pagination.setItemsCount(response.data.count);
   };
 
   const scrollToTop = () => {
@@ -80,26 +82,22 @@ const Profile = observer(() => {
         />
       </Box>
 
-      <Box
-        sx={{
-          paddingLeft: 2,
-          paddingTop: 2,
-          paddingRight: 2,
-        }}
-      >
-        {
-          socketList.sockets.length
-            ?
-            <div>
-              <SocketList />
-              <CustomPagination />
-            </div>
-            :
-            <Typography>
-              У вас нет записей
-            </Typography>
-        }
-      </Box>
+      {
+        loading.isProfileLoading
+          ?
+          <LoadingIndicatior />
+          :
+          <Box
+            sx={{
+              paddingLeft: 2,
+              paddingTop: 2,
+              paddingRight: 2,
+            }}
+          >
+            <SocketList />
+            <CustomPagination />
+          </Box>
+      }
     </div>
   );
 });

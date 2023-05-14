@@ -1,24 +1,29 @@
-import { BrowserRouter } from "react-router-dom";
 import { useContext, useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
-import AppRouter from "./components/AppRouter";
 import { check } from "./http/UserApi";
+import AppRouter from "./components/AppRouter";
+import { LoadingIndicatior } from "./components/LoadingIndicator";
 
 import { Context } from "./index";
 
 import "./styles/App.css";
 
-const App = () => {
-  const { user } = useContext(Context);
+const App = observer(() => {
+  const { user, loading } = useContext(Context);
 
   const checkUserAuth = async () => {
+    loading.setIsPageLoading(true);
+
     try {
       await check();
+      user.setIsAuth(true);
     } catch(error) {
       console.error(error);
-      return;
+    } finally {
+      loading.setIsPageLoading(false);
     }
-    user.setIsAuth(true);
   };
 
   useEffect(() => {
@@ -26,10 +31,18 @@ const App = () => {
   }, []);
 
   	return (
-    	<BrowserRouter>
-      	<AppRouter />
-    	</BrowserRouter>
+    <div>
+      {
+        loading.isPageLoading
+          ?
+          <LoadingIndicatior />
+          :
+          <BrowserRouter>
+            <AppRouter />
+          </BrowserRouter>
+      }
+    </div>
   	);
-};
+});
 
 export default App;

@@ -22,7 +22,7 @@ const CustomPagination = () => {
     });
   };
 
-  if (pagination.pagesCount === 1) {
+  if (!pagination.pagesCount || pagination.pagesCount === 1) {
     return;
   }
 

@@ -1,18 +1,21 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
+import { observer } from "mobx-react-lite";
+import { LoadingButton } from "@mui/lab";
 
 import { createSocket } from "../../http/SocketApi";
 import { Context } from "../../index";
 import { RESULT_ROUTE } from "../../utils/Consts";
 import { normalizeShortUrl } from "../../utils/SocketUtils";
 
-const SocketForm = () => {
+const SocketForm = observer(() => {
   const navigate = useNavigate();
-  const { user } = useContext(Context);
+  const { user, loading } = useContext(Context);
   const [fullUrl, setFullUrl] = useState("");
 
   const confirmButtonClicked = async () => {
+    loading.setIsButtonLoading(true);
     let response;
 
     try {
@@ -20,14 +23,14 @@ const SocketForm = () => {
         fullUrl,
         isAuth: user.isAuth,
       });
+      localStorage.setItem("fullUrl", response.data["full_url"]);
+      localStorage.setItem("shortUrl", normalizeShortUrl(response.data["short_url"]));
+      navigate(RESULT_ROUTE);
     } catch (error) {
       console.error(error);
-      return;
+    } finally {
+      loading.setIsButtonLoading(false);
     }
-
-    localStorage.setItem("fullUrl", response.data.full_url);
-    localStorage.setItem("shortUrl", normalizeShortUrl(response.data.short_url));
-    navigate(RESULT_ROUTE);
   };
 
   return (
@@ -43,18 +46,19 @@ const SocketForm = () => {
         onChange={event => setFullUrl(event.target.value)}
       >
       </TextField>
-      <Button
+      <LoadingButton
         variant="contained"
+        onClick={confirmButtonClicked}
+        onChange={e => setFullUrl(e.target.value)}
+        loading={loading.isButtonLoading}
         sx={{
           background: "#28384A",
         }}
-        onClick={confirmButtonClicked}
-        onChange={e => setFullUrl(e.target.value)}
       >
         Подтвердить
-      </Button>
+      </LoadingButton>
     </Box>
   );
-};
+});
 
 export { SocketForm };

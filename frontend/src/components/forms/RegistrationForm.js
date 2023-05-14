@@ -1,14 +1,16 @@
-import { Typography, TextField, Button, Box } from "@mui/material";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Typography, TextField, Button, Box } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { observer } from "mobx-react-lite";
 
-import { registration, logIn } from "../../http/UserApi";
 import { Context } from "../../index";
+import { registration, logIn } from "../../http/UserApi";
 import { LOGIN_ROUTE, MAIN_ROUTE } from "../../utils/Consts";
 
-const RegistrationForm = () => {
+const RegistrationForm = observer(() => {
   const navigate = useNavigate();
-  const { user } = useContext(Context);
+  const { user, loading } = useContext(Context);
   const [ registrationForm, setRegistrationForm ] = useState({
     email: "",
     username: "",
@@ -16,18 +18,20 @@ const RegistrationForm = () => {
   });
 
   const registrationButtonClicked = async () => {
+    loading.setIsButtonLoading(true);
     const logInForm = {...registrationForm};
     delete logInForm["email"];
 
     try {
       await registration(registrationForm);
       await logIn(logInForm);
+      user.setIsAuth(true);
+      navigate(MAIN_ROUTE);
     } catch (error) {
       console.error(error);
-      return;
+    } finally {
+      loading.setIsButtonLoading(false);
     }
-    user.setIsAuth(true);
-    navigate(MAIN_ROUTE);
   };
 
   const loginButtonClicked = () => {
@@ -76,15 +80,16 @@ const RegistrationForm = () => {
           marginTop: 1,
         }}
       >
-        <Button
+        <LoadingButton
           variant="contained"
           onClick={registrationButtonClicked}
+          loading={loading.isButtonLoading}
           sx={{
             marginRight: 1,
           }}
         >
           Зарегистрироваться
-        </Button>
+        </LoadingButton>
         <Button
           variant="outlined"
           onClick={loginButtonClicked}
@@ -94,6 +99,6 @@ const RegistrationForm = () => {
       </Box>
     </div>
   );
-};
+});
 
 export { RegistrationForm };

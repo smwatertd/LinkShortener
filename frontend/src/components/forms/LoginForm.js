@@ -1,28 +1,33 @@
-import { Typography, TextField, Button, Box } from "@mui/material";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import { Typography, TextField, Button, Box } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 import { Context } from "../../index";
 import { MAIN_ROUTE, REGISTRATION_ROUTE } from "../../utils/Consts";
 import { logIn } from "../../http/UserApi";
 
-const LogInForm = () => {
+const LogInForm = observer(() => {
   const navigate = useNavigate();
-  const { user } = useContext(Context);
+  const { user, loading } = useContext(Context);
   const [ logInForm, setLogInForm ] = useState({
     username: "",
     password: "",
   });
 
   const loginButtonClicked = async () => {
+    loading.setIsButtonLoading(true);
+
     try {
       await logIn(logInForm);
+      user.setIsAuth(true);
+      navigate(MAIN_ROUTE);
     } catch (error) {
       console.error(error);
-      return;
+    } finally {
+      loading.setIsButtonLoading(false);
     }
-    user.setIsAuth(true);
-    navigate(MAIN_ROUTE);
   };
 
   const registrationButtonClicked = () => {
@@ -62,15 +67,16 @@ const LogInForm = () => {
           marginTop: 1,
         }}
       >
-        <Button
+        <LoadingButton
           variant="contained"
           onClick={loginButtonClicked}
+          loading={loading.isButtonLoading}
           sx={{
             marginRight: 1,
           }}
         >
           Войти
-        </Button>
+        </LoadingButton>
         <Button
           variant="outlined"
           onClick={registrationButtonClicked}
@@ -80,6 +86,6 @@ const LogInForm = () => {
       </Box>
     </div>
   );
-};
+});
 
 export { LogInForm };

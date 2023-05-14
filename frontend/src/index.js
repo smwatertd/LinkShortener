@@ -6,6 +6,7 @@ import UserStore from "./store/UserStore";
 import RedirectStore from "./store/RedirectStore";
 import SocketListStore from "./store/SocketListStore";
 import PaginationStore from "./store/PaginationStore";
+import LoadingStore from "./store/LoadingStore";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const Context = createContext(null);
@@ -16,6 +17,7 @@ root.render(
     socketList: new SocketListStore(),
     redirect: new RedirectStore(),
     pagination: new PaginationStore(),
+    loading: new LoadingStore(),
   }}>
     <App />
   </Context.Provider>

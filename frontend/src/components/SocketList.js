@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { observer } from "mobx-react-lite";
+import { Typography } from "@mui/material";
 
 import { Context } from "../index";
 
@@ -12,12 +13,18 @@ const SocketList = observer(() => {
   return (
     <div>
       {
-        socketList
-          .sockets
-          .map(socket => {
-            num += 1;
-            return <Socket key={socket.shortUrl} num={num} socket={socket}/>;
-          })
+        socketList.socketsCount
+          ?
+          socketList
+            .sockets
+            .map(socket => {
+              num += 1;
+              return <Socket key={socket.shortUrl} num={num} socket={socket}/>;
+            })
+          :
+          <Typography>
+            У вас нет записей. Перейдите на главную, чтобы их создать
+          </Typography>
       }
     </div>
   );

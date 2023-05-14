@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
-import { Box, Button, Typography } from "@mui/material";
+import { observer } from "mobx-react-lite";
+import { Box, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 import { Context } from "../index";
 import { deleteSocket } from "../http/SocketApi";
@@ -8,19 +10,26 @@ import { normalizeDate, normalizeShortUrl } from "../utils/SocketUtils";
 
 import { CopyButton } from "./ui/CopyButton";
 
-const Socket = ({num, socket}) => {
+const Socket = observer(({num, socket}) => {
   const navigate = useNavigate();
-  const { socketList, pagination } = useContext(Context);
+  const { socketList, pagination, loading } = useContext(Context);
 
   const deleteButtonClicked = async () => {
+    loading.setIsButtonLoading(true);
+
     try {
       await deleteSocket({
         shortUrl: socket.shortUrl,
       });
+      removeSocket();
     } catch (error) {
       console.error(error);
-      return;
+    } finally {
+      loading.setIsButtonLoading(false);
     }
+  };
+
+  const removeSocket = () => {
     socketList.removeSocket(num - 1 - pagination.firstItemIndex);
     if (!socketList.sockets.length) {
       pagination.setPage(pagination.page - 1);
@@ -99,12 +108,13 @@ const Socket = ({num, socket}) => {
           Просмотры: {socket.views}
         </Typography>
 
-        <Button
+        <LoadingButton
           variant="contained"
           onClick={deleteButtonClicked}
+          loading={loading.isButtonLoading}
         >
           Удалить
-        </Button>
+        </LoadingButton>
       </Box>
       {
         isLastSocket()
@@ -115,6 +125,6 @@ const Socket = ({num, socket}) => {
       }
     </Box>
   );
-};
+});
 
 export { Socket };
