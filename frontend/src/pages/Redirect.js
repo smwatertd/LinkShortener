@@ -14,22 +14,23 @@ const Redirect = () => {
 
   const handleRedirect = async () => {
     // Обработчик перенаправления
-    loading.setIsPageLoading(true);
+    redirect.setIsRedirect(true);
+    loading.setIsRedirectLoading(true);
     let response;
 
     try {
       response = await fetchFullUrl(shortUrl);
       window.location = response.data["full_url"];
     } catch (error) {
-      redirect.setIsRedirect(false);
+      console.error(error);
       navigate(ERROR_ROUTE);
     } finally {
-      loading.setIsPageLoading(false);
+      redirect.setIsRedirect(false);
+      loading.setIsRedirectLoading(false);
     }
   };
 
   useEffect(() => {
-    redirect.setIsRedirect(true);
     handleRedirect();
   }, []);
 

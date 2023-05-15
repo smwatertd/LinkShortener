@@ -6,6 +6,7 @@ export default class LoadingStore {
     this._isButtonLoading = false;
     this._isPageLoading = false;
     this._isProfileLoading = false;
+    this._isRedirectLoading = false;
     makeAutoObservable(this);
   }
 
@@ -21,6 +22,10 @@ export default class LoadingStore {
     this._isProfileLoading = isLoading;
   }
 
+  setIsRedirectLoading(isLoading) {
+    this._isRedirectLoading = isLoading;
+  }
+
   get isButtonLoading() {
     return this._isButtonLoading;
   }
@@ -31,5 +36,9 @@ export default class LoadingStore {
 
   get isProfileLoading() {
     return this._isProfileLoading;
+  }
+
+  get isRedirectLoading() {
+    return this._isRedirectLoading;
   }
 }
