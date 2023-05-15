@@ -3,18 +3,28 @@ from typing import Type, Union
 from django.contrib.auth import get_user_model
 
 from rest_framework import status
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from users import exceptions, serializers, services
 from users.paginators import UserSocketsPaginator
 
 
-class UserView(ListCreateAPIView):
+class UserView(APIView):
     """
     Представление пользователя
     """
     pagination_class = UserSocketsPaginator
+    permission_classes = (IsAuthenticated, )
+
+    def get_serializer_class(self) -> Union[
+        Type[serializers.ListSocketSerializer],
+        Type[serializers.CreateUserSerializer],
+    ]:
+        if self.request.method == 'GET':
+            return serializers.ListSocketSerializer
+        return serializers.CreateUserSerializer
 
     def get(self, request, *args, **kwargs) -> Response:
         """
@@ -41,10 +51,9 @@ class UserView(ListCreateAPIView):
         get_user_model().objects.create_user(**serializer.data)
         return Response(status=status.HTTP_201_CREATED)
 
-    def get_serializer_class(self) -> Union[
-        Type[serializers.ListSocketSerializer],
-        Type[serializers.CreateUserSerializer],
-    ]:
-        if self.request.method == 'GET':
-            return serializers.ListSocketSerializer
-        return serializers.CreateUserSerializer
+    def delete(self, request, pk: str, *args, **kwargs):
+        """
+        Удаление сокета
+        """
+        services.delete_socket_if_exists(request.user, pk)
+        return Response(status=status.HTTP_204_NO_CONTENT)

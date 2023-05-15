@@ -2,7 +2,7 @@ from django.http import HttpRequest
 
 from sockets import utils
 from sockets.exceptions import ShortUrlNotFound
-from sockets.models import Ip, Socket, User
+from sockets.models import Ip, Socket
 
 
 def generate_short_url() -> str:
@@ -68,11 +68,3 @@ def get_or_create_ip(request: HttpRequest) -> Ip:
     """
     request_ip = utils.get_ip(request)
     return Ip.objects.get_or_create(address=request_ip)[0]
-
-
-def delete_socket_if_exists(author: User, short_url: str) -> None:
-    """
-    Удаление сокета по короткому url, если существует
-    """
-    if author.is_authenticated:
-        Socket.objects.filter(author=author, short_url=short_url).delete()

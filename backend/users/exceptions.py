@@ -7,11 +7,3 @@ class UserFormIncorrect(APIException):
         'status': 'fail',
         'info': 'User form is not correct',
     }
-
-
-class NotAuthenticatedUser(APIException):
-    status_code = 401
-    default_detail = {
-        'status': 'fail',
-        'info': 'Anonymous user',
-    }

@@ -1,16 +1,15 @@
 from typing import Type
 
 from rest_framework import status
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 import sockets.serializers as serializers
 import sockets.services as services
 from sockets import exceptions
 
 
-class CreateDeleteSocketView(APIView):
+class CreateSocketView(CreateAPIView):
     """
     Представление создания и удаления сокета
     """
@@ -37,13 +36,6 @@ class CreateDeleteSocketView(APIView):
         socket = services.create_socket(request.user, **create_socket_serializer.data)
         socket_serializer = self._get_socket_serializer_class()(socket)
         return Response(socket_serializer.data, status=status.HTTP_201_CREATED)
-
-    def delete(self, request, pk: str, *args, **kwargs) -> Response:
-        """
-        Удаление сокета
-        """
-        services.delete_socket_if_exists(request.user, pk)
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class RedirectView(RetrieveAPIView):

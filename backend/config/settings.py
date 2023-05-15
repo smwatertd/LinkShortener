@@ -73,7 +73,7 @@ if DEBUG:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': env.str('DB_ENGINE'),
+            'ENGINE': 'django.db.backends.postgresql',
             'NAME': env.str('DB_NAME'),
             'USER': env.str('DB_USER'),
             'PASSWORD': env.str('DB_PASSWORD'),
@@ -157,7 +157,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    env.str('ALLOWED_ORIGINS'),
 ]
 
 MAX_LENGTH = env.int('MAX_LENGTH')

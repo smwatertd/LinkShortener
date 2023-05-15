@@ -29,10 +29,6 @@ class TestSockets(APITestCase):
             'redirect',
             kwargs={'short_url': self.correct_short_url},
         )
-        self.delete_socket_url = reverse(
-            'delete_socket',
-            kwargs={'pk': self.correct_short_url},
-        )
 
     def _create_user(self, **kwargs):
         """
@@ -104,60 +100,3 @@ class TestSockets(APITestCase):
         response = self.client.get(self.redirect_url)
 
         self.assertEqual(response.status_code, 404)
-
-    def test_success_delete_socket(self):
-        """
-        Успешное удаление сокета
-        """
-        Socket.objects.create(
-            author=self.user,
-            full_url=self.correct_full_url,
-            short_url=self.correct_short_url,
-        )
-        self._set_client_credentials()
-
-        response = self.client.delete(self.delete_socket_url)
-
-        sockets_count = Socket.objects.filter(short_url=self.correct_short_url).count()
-        self.assertEqual(response.status_code, 204)
-        self.assertEqual(sockets_count, 0)
-
-    def test_failure_wrong_url_delete_socket(self):
-        """
-        Неудачное удаление сокета.
-        Причина: неправильный короткий url
-        """
-        Socket.objects.create(
-            author=self.user,
-            full_url=self.correct_full_url,
-            short_url=self.incorrect_short_url,
-        )
-
-        response = self.client.delete(self.delete_socket_url)
-
-        sockets_count = Socket.objects.filter(short_url=self.incorrect_short_url).count()
-        self.assertEqual(response.status_code, 204)
-        self.assertEqual(sockets_count, 1)
-
-    def test_failure_not_author_delete_socket(self):
-        """
-        Неудачное удаление сокета.
-        Причина: у сокета другой автор
-        """
-        other_user = self._create_user(
-            username='user',
-            email='user@gmail.com',
-            password='userPassword',
-        )
-        Socket.objects.create(
-            author=other_user,
-            full_url=self.correct_full_url,
-            short_url=self.correct_short_url,
-        )
-        self._set_client_credentials()
-
-        response = self.client.delete(self.delete_socket_url)
-
-        sockets_count = Socket.objects.filter(short_url=self.correct_short_url).count()
-        self.assertEqual(response.status_code, 204)
-        self.assertEqual(sockets_count, 1)
