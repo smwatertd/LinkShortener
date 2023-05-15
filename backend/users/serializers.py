@@ -4,8 +4,6 @@ from rest_framework import serializers
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from sockets.models import Socket
-
 
 class CreateUserSerializer(serializers.ModelSerializer):
     """
@@ -18,26 +16,6 @@ class CreateUserSerializer(serializers.ModelSerializer):
             'email',
             'password',
         )
-
-
-class ListSocketSerializer(serializers.ModelSerializer):
-    """
-    Сериализатор сокетов пользователя
-    """
-    views = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Socket
-        fields = (
-            'pk',
-            'full_url',
-            'short_url',
-            'created_at',
-            'views',
-        )
-
-    def get_views(self, obj: Socket) -> int:
-        return obj.views.count()
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

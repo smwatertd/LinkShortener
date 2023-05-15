@@ -22,7 +22,6 @@ const Redirect = () => {
       response = await fetchFullUrl(shortUrl);
       window.location = response.data["full_url"];
     } catch (error) {
-      console.error(error);
       navigate(ERROR_ROUTE);
     } finally {
       redirect.setIsRedirect(false);

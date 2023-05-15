@@ -18,20 +18,14 @@ const Profile = observer(() => {
   const handleFetchUserSockets = async () => {
     // Обработчик получения сокетов пользователя
     loading.setIsProfileLoading(true);
-    let response;
 
-    try {
-      response = await fetchSockets({
-        page: pagination.page,
-        pageSize: pagination.pageSize,
-      });
-      socketList.setSockets(response.data.sockets);
-      pagination.setItemsCount(response.data.count);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      loading.setIsProfileLoading(false);
-    }
+    const response = await fetchSockets({
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+    });
+    socketList.setSockets(response.data.sockets);
+    pagination.setItemsCount(response.data.count);
+    loading.setIsProfileLoading(false);
   };
 
   const scrollToTop = () => {

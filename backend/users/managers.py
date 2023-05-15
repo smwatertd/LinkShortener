@@ -2,6 +2,9 @@ from django.contrib.auth.base_user import BaseUserManager
 
 
 class UserManager(BaseUserManager):
+    """
+    Менеджер модели пользоля
+    """
     def _create_user(
         self,
         username,

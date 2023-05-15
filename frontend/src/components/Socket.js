@@ -21,16 +21,11 @@ const Socket = observer(({num, socket}) => {
     // Обработчик нажатия кнопки удаления сокета
     loading.setIsButtonLoading(true);
 
-    try {
-      await deleteSocket({
-        shortUrl: socket.shortUrl,
-      });
-      removeSocket();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      loading.setIsButtonLoading(false);
-    }
+    await deleteSocket({
+      shortUrl: socket.shortUrl,
+    });
+    removeSocket();
+    loading.setIsButtonLoading(false);
   };
 
   const removeSocket = () => {

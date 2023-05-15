@@ -7,11 +7,12 @@ import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
 import { registration, logIn } from "../../http/UserApi";
 import { LOGIN_ROUTE, MAIN_ROUTE } from "../../utils/Consts";
+import { CustomAlert } from "../ui/CustomAlert";
 
 const RegistrationForm = observer(() => {
   // Форма регистрации пользователя
   const navigate = useNavigate();
-  const { user, loading } = useContext(Context);
+  const { user, loading, alert } = useContext(Context);
   const [ registrationForm, setRegistrationForm ] = useState({
     email: "",
     username: "",
@@ -30,7 +31,8 @@ const RegistrationForm = observer(() => {
       user.setIsAuth(true);
       navigate(MAIN_ROUTE);
     } catch (error) {
-      console.error(error);
+      alert.setIsAlert(true);
+      alert.setAlertInfo(error);
     } finally {
       loading.setIsButtonLoading(false);
     }
@@ -100,6 +102,7 @@ const RegistrationForm = observer(() => {
           Войти
         </Button>
       </Box>
+      <CustomAlert />
     </div>
   );
 });

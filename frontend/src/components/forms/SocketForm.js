@@ -8,11 +8,12 @@ import { createSocket } from "../../http/SocketApi";
 import { Context } from "../../index";
 import { RESULT_ROUTE } from "../../utils/Consts";
 import { normalizeShortUrl } from "../../utils/SocketUtils";
+import { CustomAlert } from "../ui/CustomAlert";
 
 const SocketForm = observer(() => {
   // Форма создания сокета
   const navigate = useNavigate();
-  const { user, loading } = useContext(Context);
+  const { user, loading, alert } = useContext(Context);
   const [fullUrl, setFullUrl] = useState("");
 
   const confirmButtonClicked = async () => {
@@ -29,7 +30,8 @@ const SocketForm = observer(() => {
       localStorage.setItem("shortUrl", normalizeShortUrl(response.data["short_url"]));
       navigate(RESULT_ROUTE);
     } catch (error) {
-      console.error(error);
+      alert.setIsAlert(true);
+      alert.setAlertInfo(error);
     } finally {
       loading.setIsButtonLoading(false);
     }
@@ -59,6 +61,7 @@ const SocketForm = observer(() => {
       >
         Подтвердить
       </LoadingButton>
+      <CustomAlert />
     </Box>
   );
 });

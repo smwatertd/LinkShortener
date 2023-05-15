@@ -7,11 +7,12 @@ import { LoadingButton } from "@mui/lab";
 import { Context } from "../../index";
 import { MAIN_ROUTE, REGISTRATION_ROUTE } from "../../utils/Consts";
 import { logIn } from "../../http/UserApi";
+import { CustomAlert } from "../ui/CustomAlert";
 
 const LogInForm = observer(() => {
   // Форма авторизации пользователя
   const navigate = useNavigate();
-  const { user, loading } = useContext(Context);
+  const { user, loading, alert } = useContext(Context);
   const [ logInForm, setLogInForm ] = useState({
     username: "",
     password: "",
@@ -26,7 +27,8 @@ const LogInForm = observer(() => {
       user.setIsAuth(true);
       navigate(MAIN_ROUTE);
     } catch (error) {
-      console.error(error);
+      alert.setIsAlert(true);
+      alert.setAlertInfo(error);
     } finally {
       loading.setIsButtonLoading(false);
     }
@@ -87,6 +89,7 @@ const LogInForm = observer(() => {
           Зарегистрироваться
         </Button>
       </Box>
+      <CustomAlert />
     </div>
   );
 });

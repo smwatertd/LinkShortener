@@ -1,19 +1,12 @@
-from django.db.models.query import QuerySet
-
-from sockets.models import Socket
-
 from users.models import User
 
 
-def get_user_sockets(user: User) -> QuerySet[Socket]:
-    """
-    Получение сокетов пользователя
-    """
-    return Socket.objects.filter(author=user)
+def is_user_exists(username: str, password: str) -> bool:
+    user = User.objects.filter(username=username).first()
+    if user is None:
+        return False
+    return user.check_password(password)
 
 
-def delete_socket_if_exists(author: User, short_url: str) -> None:
-    """
-    Удаление сокета по короткому url, если существует
-    """
-    Socket.objects.filter(author=author, short_url=short_url).delete()
+def create_user(**user_data) -> None:
+    User.objects.create_user(**user_data)

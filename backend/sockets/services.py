@@ -1,8 +1,11 @@
+from django.db.models import QuerySet
 from django.http import HttpRequest
 
+from sockets import exceptions
 from sockets import utils
-from sockets.exceptions import ShortUrlNotFound
 from sockets.models import Ip, Socket
+
+from users.models import User
 
 
 def generate_short_url() -> str:
@@ -38,10 +41,9 @@ def get_socket(short_url: str) -> Socket:
     """
     Получение сокета
     """
-    try:
-        socket = Socket.objects.get(short_url=short_url)
-    except Socket.DoesNotExist:
-        raise ShortUrlNotFound
+    socket = Socket.objects.filter(short_url=short_url).first()
+    if socket is None:
+        raise exceptions.ShortUrlNotFound
     return socket
 
 
@@ -68,3 +70,20 @@ def get_or_create_ip(request: HttpRequest) -> Ip:
     """
     request_ip = utils.get_ip(request)
     return Ip.objects.get_or_create(address=request_ip)[0]
+
+
+def get_user_sockets(user: User) -> QuerySet[Socket]:
+    """
+    Получение сокетов пользователя
+    """
+    if not user.is_authenticated:
+        raise exceptions.AnonymousUserException
+    return Socket.objects.filter(author=user)
+
+
+def delete_socket_if_exists(user: User, short_url: str) -> None:
+    """
+    Удаление сокета по короткому url, если существует
+    """
+    if user.is_authenticated:
+        Socket.objects.filter(author=user, short_url=short_url).delete()

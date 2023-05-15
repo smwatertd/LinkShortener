@@ -6,6 +6,9 @@ from users.managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """
+    Модель пользователя
+    """
     id = models.AutoField(
         primary_key=True,
     )

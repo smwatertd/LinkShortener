@@ -12,7 +12,7 @@ export const fetchSockets = async ({page, pageSize}) => {
   // Получение сокетов пользователя
   // page - страница
   // pageSize - количество сокетов на странице
-  const response = await $authHost.get("api/v1/users/", {
+  const response = await $authHost.get("api/v1/sockets/", {
     params: {
       page: page,
       page_size: pageSize,

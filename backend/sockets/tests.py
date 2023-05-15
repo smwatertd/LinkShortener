@@ -23,8 +23,12 @@ class TestSockets(APITestCase):
         self.client = APIClient()
 
         # Urls
-        self.create_socket_url = reverse('create_socket')
-        self.user_url = reverse('users')
+        self.create_socket_url = reverse('sockets')
+        self.users_url = reverse('sockets')
+        self.delete_socket_url = reverse(
+            'delete_socket',
+            kwargs={'pk': self.correct_short_url},
+        )
         self.redirect_url = reverse(
             'redirect',
             kwargs={'short_url': self.correct_short_url},
@@ -100,3 +104,86 @@ class TestSockets(APITestCase):
         response = self.client.get(self.redirect_url)
 
         self.assertEqual(response.status_code, 404)
+
+    def test_success_delete_socket(self):
+        """
+        Успешное удаление сокета
+        """
+        Socket.objects.create(
+            author=self.user,
+            full_url=self.correct_full_url,
+            short_url=self.correct_short_url,
+        )
+        self._set_client_credentials()
+
+        response = self.client.delete(self.delete_socket_url)
+
+        sockets_count = Socket.objects.filter(short_url=self.correct_short_url).count()
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(sockets_count, 0)
+
+    def test_failure_wrong_url_delete_socket(self):
+        """
+        Неудачное удаление сокета.
+        Причина: неправильный короткий url
+        """
+        Socket.objects.create(
+            author=self.user,
+            full_url=self.correct_full_url,
+            short_url=self.incorrect_short_url,
+        )
+
+        response = self.client.delete(self.delete_socket_url)
+
+        sockets_count = Socket.objects.filter(short_url=self.incorrect_short_url).count()
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(sockets_count, 1)
+
+    def test_failure_not_author_delete_socket(self):
+        """
+        Неудачное удаление сокета.
+        Причина: у сокета другой автор
+        """
+        other_user = self._create_user(
+            username='user',
+            email='user@gmail.com',
+            password='userPassword',
+        )
+        Socket.objects.create(
+            author=other_user,
+            full_url=self.correct_full_url,
+            short_url=self.correct_short_url,
+        )
+        self._set_client_credentials()
+
+        response = self.client.delete(self.delete_socket_url)
+
+        sockets_count = Socket.objects.filter(short_url=self.correct_short_url).count()
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(sockets_count, 1)
+
+    def test_success_get_user_sockets(self):
+        """
+        Успешное получение сокетов пользователя
+        """
+        Socket.objects.create(
+            author=self.user,
+            full_url=self.correct_full_url,
+            short_url=self.correct_short_url,
+        )
+        self._set_client_credentials()
+
+        response = self.client.get(self.users_url)
+
+        sockets_count = len(response.data.get('sockets', []))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(sockets_count, 1)
+
+    def test_failure_not_auth_get_user_sockets(self):
+        """
+        Неуспешное получение сокетов пользователя
+        Причина: пользователь не авторизован
+        """
+        response = self.client.get(self.users_url)
+
+        self.assertEqual(response.status_code, 401)
