@@ -11,10 +11,14 @@ import { normalizeDate, normalizeShortUrl } from "../utils/SocketUtils";
 import { CopyButton } from "./ui/CopyButton";
 
 const Socket = observer(({num, socket}) => {
+  // Компонент отображения сокета
+  // num - номер
+  // socket - сокет
   const navigate = useNavigate();
   const { socketList, pagination, loading } = useContext(Context);
 
   const deleteButtonClicked = async () => {
+    // Обработчик нажатия кнопки удаления сокета
     loading.setIsButtonLoading(true);
 
     try {
@@ -30,6 +34,7 @@ const Socket = observer(({num, socket}) => {
   };
 
   const removeSocket = () => {
+    // Удаление сокета из mobx хранилища
     socketList.removeSocket(num - 1 - pagination.firstItemIndex);
     if (!socketList.sockets.length) {
       pagination.setPage(pagination.page - 1);
@@ -38,6 +43,7 @@ const Socket = observer(({num, socket}) => {
   };
 
   const navigateToPreviousPage = () => {
+    // Перенаправление на предыдущую страницу
     navigate({
       search: createSearchParams({
         page: pagination.page,
@@ -47,6 +53,7 @@ const Socket = observer(({num, socket}) => {
   };
 
   const isLastSocket = () => {
+    // Проверка является ли сокет последним на странице
     return socketList.sockets.length === num - pagination.firstItemIndex;
   };
 

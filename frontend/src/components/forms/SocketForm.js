@@ -10,11 +10,13 @@ import { RESULT_ROUTE } from "../../utils/Consts";
 import { normalizeShortUrl } from "../../utils/SocketUtils";
 
 const SocketForm = observer(() => {
+  // Форма создания сокета
   const navigate = useNavigate();
   const { user, loading } = useContext(Context);
   const [fullUrl, setFullUrl] = useState("");
 
   const confirmButtonClicked = async () => {
+    // Обработчик нажатия кнопки создания сокета
     loading.setIsButtonLoading(true);
     let response;
 

@@ -5,15 +5,18 @@ import { createSearchParams, useNavigate } from "react-router-dom";
 import { Context } from "../index";
 
 const CustomPagination = () => {
+  // Компонент переключения страниц
   const navigate = useNavigate();
   const { pagination } = useContext(Context);
 
   const changePage = (page) => {
+    // Обработчик изменения номера страницы
     pagination.setPage(page);
     navigateToNewPage();
   };
 
   const navigateToNewPage = () => {
+    // Перенаправления на измененную страницу
     navigate({
       search: createSearchParams({
         page: pagination.page,
@@ -23,6 +26,7 @@ const CustomPagination = () => {
   };
 
   if (!pagination.pagesCount || pagination.pagesCount === 1) {
+    // Проверка на необходимость отображать компонент
     return;
   }
 

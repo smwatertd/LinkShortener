@@ -7,6 +7,7 @@ const $authHost = axios.create({
 });
 
 const refreshToken = async () => {
+  // Обновление токена
   try {
     const refresh = localStorage.getItem("refresh");
     const response  = await $host.post("api/token/refresh/", {refresh});
@@ -19,11 +20,15 @@ const refreshToken = async () => {
 };
 
 const authHostConfig = config => {
+  // Конфигурация перехватчика (interceptor) запросов для
+  // авторизованного хоста (authHost)
   config.headers.Authorization = `Bearer ${localStorage.getItem("access")}`;
   return config;
 };
 
 const authHostError = async (error) => {
+  // Конфигурация перехватчика (interceptor) ответов на возникающую
+  // ошибку для авторизованного хоста (authHost)
   const originalRequest = error.config;
   if (error.response.status === 401 && !originalRequest._isRetry) {
     originalRequest._isRetry = true;

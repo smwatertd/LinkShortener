@@ -4,6 +4,7 @@ import { SocketCard } from "../components/SocketCard";
 import { MainButton } from "../components/ui/MainButton";
 
 const Result = () => {
+  // Страница для отображения результата создания сокета
   return (
     <div>
       <Box

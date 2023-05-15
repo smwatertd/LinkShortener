@@ -7,6 +7,7 @@ import { Context } from "../index";
 import { Socket } from "./Socket";
 
 const SocketList = observer(() => {
+  // Компонент для отображения списка сокетов
   const { socketList, pagination } = useContext(Context);
   let num = pagination.firstItemIndex;
 

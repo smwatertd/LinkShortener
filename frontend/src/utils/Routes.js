@@ -15,6 +15,7 @@ import {
 } from "./Consts";
 
 export const publicRoutes = [
+  // Объекты публичных маршрутов
   {
     path: MAIN_ROUTE,
     element: <Main />,
@@ -42,6 +43,7 @@ export const publicRoutes = [
 ];
 
 export const privateRoutes = [
+  // Объекты приватных маршрутов
   {
     path: PROFILE_ROUTE,
     element: <Profile />,

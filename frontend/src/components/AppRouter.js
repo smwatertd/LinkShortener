@@ -6,9 +6,11 @@ import { publicRoutes, privateRoutes } from "../utils/Routes";
 import { Context } from "../index";
 
 const AppRouter = observer(() => {
+  // Роутер приложения
   const { user } = useContext(Context);
 
   const isUserAuth = () => {
+    // Проверка авторизованности пользователя
     return !!localStorage.getItem("refresh") || user.isAuth;
   };
 

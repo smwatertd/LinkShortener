@@ -7,11 +7,13 @@ import { ERROR_ROUTE } from "../utils/Consts";
 import { LoadingIndicatior } from "../components/LoadingIndicator";
 
 const Redirect = () => {
+  // Страница перенаправления
   const navigate = useNavigate();
   const shortUrl = useParams("shortUrl");
   const { redirect, loading } = useContext(Context);
 
   const handleRedirect = async () => {
+    // Обработчик перенаправления
     loading.setIsPageLoading(true);
     let response;
 

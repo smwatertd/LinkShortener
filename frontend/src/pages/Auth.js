@@ -6,6 +6,7 @@ import { LogInForm } from "../components/forms/LoginForm";
 import { RegistrationForm } from "../components/forms/RegistrationForm";
 
 const Auth = () => {
+  // Страница авторизация и регистрации
   const location = useLocation();
   const isLogin = location.pathname === LOGIN_ROUTE;
 

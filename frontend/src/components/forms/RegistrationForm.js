@@ -9,6 +9,7 @@ import { registration, logIn } from "../../http/UserApi";
 import { LOGIN_ROUTE, MAIN_ROUTE } from "../../utils/Consts";
 
 const RegistrationForm = observer(() => {
+  // Форма регистрации пользователя
   const navigate = useNavigate();
   const { user, loading } = useContext(Context);
   const [ registrationForm, setRegistrationForm ] = useState({
@@ -18,6 +19,7 @@ const RegistrationForm = observer(() => {
   });
 
   const registrationButtonClicked = async () => {
+    // Обработчик нажатия кнопки регистрации
     loading.setIsButtonLoading(true);
     const logInForm = {...registrationForm};
     delete logInForm["email"];
@@ -35,6 +37,7 @@ const RegistrationForm = observer(() => {
   };
 
   const loginButtonClicked = () => {
+    // Обработчик нажатия кнопки авторизациия
     navigate(LOGIN_ROUTE);
   };
 

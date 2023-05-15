@@ -8,6 +8,7 @@ import { ERROR_ROUTE } from "../utils/Consts";
 import { CopyButton } from "./ui/CopyButton";
 
 const SocketCard = observer(() => {
+  // Компонент для отображения результата создания сокета
   const navigate = useNavigate();
   const [ socket, setSocket ] = useState({
     fullUrl: "",
@@ -15,6 +16,7 @@ const SocketCard = observer(() => {
   });
 
   const getSocketFromStorage = () => {
+    // Получение созданного сокета из локального хранилища
     const fullUrl = localStorage.getItem("fullUrl");
     const shortUrl = localStorage.getItem("shortUrl");
 

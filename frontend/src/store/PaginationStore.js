@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 export default class PaginationStore {
+  // Store для хранения данных о пагинации
   constructor() {
     this._setDefaultState();
     makeAutoObservable(this);

@@ -6,12 +6,14 @@ import { observer } from "mobx-react-lite";
 import { Context } from "../index";
 
 const LoadingIndicatior = observer(() => {
+  // Индикатор загрузки
   const { loading } = useContext(Context);
 
   if (!(loading.isPageLoading || loading.isProfileLoading)) {
+    // Проверка необходимости отображения компонента
     return;
   }
-  
+
   return (
     <Box
       sx={{

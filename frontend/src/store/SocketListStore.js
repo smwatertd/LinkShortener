@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 const _normalizeSocket = (socket) => {
+  // Приведение сокета к стандартному формату объекта Java Script
   return {
     fullUrl: socket.full_url,
     shortUrl: socket.short_url,
@@ -10,6 +11,7 @@ const _normalizeSocket = (socket) => {
 };
 
 export default class SocketListStore {
+  // Store для хранения данных о списка сокетов
   constructor() {
     this._sockets = [];
     this._socketsCount = -1;
@@ -17,6 +19,8 @@ export default class SocketListStore {
   }
 
   removeSocket(index) {
+    // Удаления сокета из списка сокетов
+    // index - индекс
     this._sockets.splice(index, 1);
     this.setSocketsCount(this.socketsCount - 1);
   }

@@ -14,6 +14,7 @@ const App = observer(() => {
   const { user, loading } = useContext(Context);
 
   const checkUserAuth = async () => {
+    // Обработчик проверки авторизованности пользователя
     loading.setIsPageLoading(true);
 
     try {

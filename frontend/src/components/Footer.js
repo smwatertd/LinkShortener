@@ -6,9 +6,11 @@ import { Box, Typography } from "@mui/material";
 import { Context } from "../index";
 
 const Footer = observer(() => {
+  // Нижний колонтитул
   const { redirect } = useContext(Context);
 
   if (redirect.isRedirect) {
+    // Проверка на необходимость отображения компонента
     return;
   }
 

@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 export default class LoadingStore {
+  // Store для хранения данных о загрузке компонентов
   constructor() {
     this._isButtonLoading = false;
     this._isPageLoading = false;

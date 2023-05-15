@@ -11,10 +11,12 @@ import { MainButton } from "../components/ui/MainButton";
 import { LoadingIndicatior } from "../components/LoadingIndicator";
 
 const Profile = observer(() => {
+  // Страница профиля пользователя
   const [ searchParams ] = useSearchParams();
   const { socketList, pagination, loading } = useContext(Context);
 
   const handleFetchUserSockets = async () => {
+    // Обработчик получения сокетов пользователя
     loading.setIsProfileLoading(true);
     let response;
 
@@ -33,15 +35,19 @@ const Profile = observer(() => {
   };
 
   const scrollToTop = () => {
+    // Задание положения страницы вверх
     window.scrollTo(0, 0);
   };
 
   const setPage = () => {
+    // Обработчик получения номера страницы из параметров поиска
     const page = Number(searchParams.get("page"));
     pagination.setPage(page);
   };
 
   const setPageSize = () => {
+    // Обработчик получения количества сокетов на страницу
+    // из параметров поиска
     const pageSize = Number(searchParams.get("pageSize"));
     pagination.setPageSize(pageSize);
   };

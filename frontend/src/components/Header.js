@@ -8,9 +8,11 @@ import { Context } from "../index";
 import { Navbar } from "./Navbar";
 
 const Header = observer(() => {
+  // Верхний колонтитул
   const { redirect } = useContext(Context);
 
   if (redirect.isRedirect) {
+    // Проверка на необходимость отображения компонента
     return;
   }
 

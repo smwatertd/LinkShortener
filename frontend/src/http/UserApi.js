@@ -1,6 +1,7 @@
 import { $host } from "./index.host";
 
 export const check = async () => {
+  // Проверка подлинности refresh токена
   let refresh = localStorage.getItem("refresh");
   refresh = refresh === null ? 0 : refresh;
   const response = await $host.post("api/token/verify/", {
@@ -10,6 +11,9 @@ export const check = async () => {
 };
 
 export const logIn = async ({username, password}) => {
+  // Авторизация пользователя
+  // username - имя
+  // password - пароль
   const response = await $host.post("api/token/", {
     username,
     password,
@@ -20,6 +24,7 @@ export const logIn = async ({username, password}) => {
 };
 
 export const logOut = () => {
+  // Деавторизация пользователя
   const items = [
     "access",
     "refresh",
@@ -30,6 +35,10 @@ export const logOut = () => {
 };
 
 export const registration = async ({email, username, password}) => {
+  // Регистрация пользователя
+  // email - адрес электронной почты
+  // username - имя
+  // password - пароль
   const response = await $host.post("api/v1/users/", {
     email,
     username,

@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { MainButton } from "../components/ui/MainButton";
 
 const NotFound = () => {
+  // Страница ошибки
   return (
     <Box
       sx={{

@@ -13,18 +13,22 @@ import {
 import { LogOutButton } from "./ui/LogOutButton";
 
 const Navbar = observer(() => {
+  // Навигационная панель
   const navigate = useNavigate();
   const { user } = useContext(Context);
 
   const profileButtonClicked = () => {
+    // Обработчик нажатия кнопки профиля
     navigate(PROFILE_ROUTE);
   };
 
   const logInButtonClicked = () => {
+    // Обработчик нажатия кнопки авторизации
     navigate(LOGIN_ROUTE);
   };
 
   const registrationButtonClicked = () => {
+    // Обработчик нажатия кнопки регистрации
     navigate(REGISTRATION_ROUTE);
   };
 
